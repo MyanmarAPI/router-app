@@ -2,9 +2,13 @@
 
 ####Installation
 1. Clone this project
+
 		git clone https://github.com/MyanmarAPI/router-app.git
+        
 2. Install Composer packages
+
 		composer install
+        
 If you have composer installed in your machine, please check [here](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 
 ####Packages 
