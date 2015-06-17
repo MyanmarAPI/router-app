@@ -12,10 +12,19 @@
 */
 
 $app->get('/', function() use ($app) {
-    return $app->welcome();
+    return response()->json([
+    	'status' => 404,
+    	'message' => 'Please check '.config('app.docs_url').' for api documentation.'
+    ], 404);
 });
 
-$app->get('/{endpoint}', [
-	'as' => 'api.endpoint',
-	'uses' => 'App\Http\Controllers\Controller@getEndpoint'
-]);
+$app->group(['middleware' => 'auth'], function($app)
+{
+	$app->get('{endpoint}', [
+		'as' => 'api.endpoint',
+		'uses' => 'App\Http\Controllers\Controller@getEndpoint'
+	]);
+});
+
+
+

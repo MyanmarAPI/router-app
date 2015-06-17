@@ -9,7 +9,10 @@
 
 		composer install
         
-If you have composer installed in your machine, please check [here](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
+If you don't have composer installed in your machine, please check [here](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
+
+####Configuration
+Please change your specific host urls in config/app.php
 
 ####Packages 
 * [Lumen PHP Framework](http://lumen.laravel.com)
