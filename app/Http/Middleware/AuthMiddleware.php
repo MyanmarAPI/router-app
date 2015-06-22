@@ -18,9 +18,7 @@ class AuthMiddleware {
         //Check for API Authentication
     	$auth_url = config('app.auth');
 
-    	$request_url = $auth_url['base_url'].$auth_url['uri'];
-
-        $client = new Client();
+        $client = new Client(['base_url' => $auth_url['base_url']]);
 
         //ToDo : Header or Auth Type need to change later according to Main App Authentication
         $headers = ['X-Auth-Token' 		=> $request->header('auth_token'),
@@ -29,7 +27,7 @@ class AuthMiddleware {
 
         try {
 
-            $auth_res = $client->get($request_url, [
+            $auth_res = $client->get($auth_url['uri'], [
                             'headers' => $headers
                         ]);
 
@@ -40,12 +38,9 @@ class AuthMiddleware {
         }
 
         switch ($auth_res->getStatusCode()) {
-            
+
             case 401:
-                return response()->json([
-                    'status' => 401,
-                    'message' => 'Authentication failed'
-                ], 401);
+                return response()->json(config('status.messages.401'), 401);
                 break;
             
             case 200:
@@ -54,10 +49,7 @@ class AuthMiddleware {
 
         } 
 
-        return response()->json([
-        	'status' => 401,
-        	'message' => 'Authentication failed'
-        ], 401);    
+        return response()->json(config('status.messages.401'), 401);
 
     }
 

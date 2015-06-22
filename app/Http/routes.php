@@ -20,7 +20,7 @@ $app->get('/', function() use ($app) {
 
 $app->group(['middleware' => 'auth|analytics'], function($app)
 {
-	$app->get('{endpoint}', [
+	$app->get('{endpoint}/api/{resource}', [
 		'as' => 'api.endpoint',
 		'uses' => 'App\Http\Controllers\Controller@getEndpoint'
 	]);
