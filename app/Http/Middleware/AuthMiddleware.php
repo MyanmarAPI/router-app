@@ -2,6 +2,7 @@
 
 use Closure;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class AuthMiddleware {
 
@@ -26,21 +27,30 @@ class AuthMiddleware {
 			        'X-Request-App-ID'  => $request->header('app_id'),
 			        'X-App-Secret-Key'  => $request->header('secret_key')];
 
-        $auth_res = $client->get($request_url, [
-					    'headers' => $headers
-					]);
+        try {
+
+            $auth_res = $client->get($request_url, [
+                            'headers' => $headers
+                        ]);
+
+        } catch (ClientException $e) {
+
+            $auth_res = $e->getResponse();
+
+        }
 
         switch ($auth_res->getStatusCode()) {
-        	case 401:
-        		return response()->json([
-        			'status' => 401,
-        			'message' => 'Authentication failed'
-        		], 401);
-        		break;
-        	
-        	case 200:
-        		return $next($request);	
-        	break;
+            
+            case 401:
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Authentication failed'
+                ], 401);
+                break;
+            
+            case 200:
+                return $next($request); 
+            break;
 
         } 
 
