@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-// Dotenv::load(__DIR__.'/../');
+Dotenv::load(__DIR__.'/../');
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +62,8 @@ $app->configure('app');
 */
 
 $app->routeMiddleware([
-	'auth' => 'App\Http\Middleware\AuthMiddleware'
+	'auth' => 'App\Http\Middleware\AuthMiddleware',
+	'analytics' => 'App\Http\Middleware\AnalyticsMiddleware'
 ]);
 
 // $app->middleware([

@@ -18,12 +18,22 @@ $app->get('/', function() use ($app) {
     ], 404);
 });
 
-$app->group(['middleware' => 'auth'], function($app)
+$app->group(['middleware' => 'auth|analytics'], function($app)
 {
 	$app->get('{endpoint}', [
 		'as' => 'api.endpoint',
 		'uses' => 'App\Http\Controllers\Controller@getEndpoint'
 	]);
+});
+
+//Temp Route for tesing Auth
+$app->get('api/authenticate', function(){
+
+	return response()->json([
+		'status' => 200,
+		'message' => 'Authentication success'
+	], 200);
+
 });
 
 
