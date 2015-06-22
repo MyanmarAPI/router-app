@@ -50,6 +50,7 @@ $app->singleton(
  */
 $app->configure('endpoints');
 $app->configure('app');
+$app->configure('status');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
