@@ -26,6 +26,7 @@ class Ga
 		    ->setProtocolVersion('1')
 		    ->setTrackingId($tracking_id)
 		    ->setClientId('12345678') //ToDo : replace with uuid
+		    ->setQueueTime(1000)
 		    ->setDocumentPath($path);
 
 		$sent = $analytics->sendPageview();
