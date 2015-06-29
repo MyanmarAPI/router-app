@@ -20,10 +20,11 @@ class Ga
 
 		$analytics = new Analytics();
 
-		$tracking_id = config('app.analytics.ga_tracking_id');
+		$tracking_id = config('app.analytics.ga.tracking_id');
+		$version = config('app.analytics.ga.version');
 
 		$analytics
-		    ->setProtocolVersion('1')
+		    ->setProtocolVersion($version)
 		    ->setTrackingId($tracking_id)
 		    ->setClientId('12345678') //ToDo : replace with uuid
 		    ->setQueueTime(1000)
