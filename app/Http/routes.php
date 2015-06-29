@@ -26,15 +26,5 @@ $app->group(['middleware' => 'auth|analytics'], function($app)
 	]);
 });
 
-//Temp Route for tesing Auth
-$app->get('api/authenticate', function(){
-
-	return response()->json([
-		'status' => 200,
-		'message' => 'Authentication success'
-	], 200);
-
-});
-
 
 
