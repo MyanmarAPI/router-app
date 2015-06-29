@@ -20,6 +20,10 @@ class Ga
 
 		$analytics = new Analytics();
 
+		if (!$path) {
+			$path = '/';
+		}
+
 		$tracking_id = config('app.analytics.ga.tracking_id');
 		$version = config('app.analytics.ga.version');
 

@@ -5,6 +5,7 @@ use Config;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
+use App\Jobs\SendAnalytics;
 
 class Controller extends BaseController
 {
@@ -27,6 +28,9 @@ class Controller extends BaseController
                 $response = $e->getResponse();
                 
             }
+
+            //Push Queue Job for Analytics
+            $this->dispatch(new SendAnalytics($request->path()));
 
             switch ($response->getStatusCode()) {
 

@@ -51,6 +51,7 @@ $app->singleton(
 $app->configure('endpoints');
 $app->configure('app');
 $app->configure('status');
+$app->configure('database');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware

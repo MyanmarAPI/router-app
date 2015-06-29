@@ -18,7 +18,7 @@ $app->get('/', function() use ($app) {
     ], 404);
 });
 
-$app->group(['middleware' => 'auth|analytics'], function($app)
+$app->group(['middleware' => 'auth'], function($app)
 {
 	$app->get('{endpoint}/api/{resource}', [
 		'as' => 'api.endpoint',
