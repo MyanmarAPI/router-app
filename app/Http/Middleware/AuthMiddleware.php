@@ -21,9 +21,8 @@ class AuthMiddleware {
         $client = new Client(['base_url' => $auth_url['base_url']]);
 
         //ToDo : Header or Auth Type need to change later according to Main App Authentication
-        $headers = ['X-Auth-Token' 		=> $request->header('auth_token'),
-			        'X-Request-App-ID'  => $request->header('app_id'),
-			        'X-App-Secret-Key'  => $request->header('secret_key')];
+        $headers = ['X-API-KEY' 		=> $request->header('X-API-KEY'),
+			        'X-API-SECRET'  => $request->header('X-API-SECRET')];
 
         try {
 
