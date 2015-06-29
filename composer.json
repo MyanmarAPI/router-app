@@ -5,10 +5,11 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "laravel/lumen-framework": "5.0.*",
+        "laravel/lumen-framework": "5.1.*",
         "vlucas/phpdotenv": "~1.0",
         "theiconic/php-ga-measurement-protocol": "^1.1",
-        "hexcores/mongo-lite": "dev-master"
+        "hexcores/mongo-lite": "dev-master",
+        "predis/predis": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
