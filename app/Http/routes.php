@@ -13,8 +13,10 @@
 
 $app->get('/', function() use ($app) {
     return response()->json([
-    	'status' => 404,
-    	'message' => 'Please check '.config('app.docs_url').' for api documentation.'
+    	'errors' => [
+    		'message' => 'Please check '.config('app.docs_url').' for api documentation.',
+    		'type' => 'invalid_request'
+    	]
     ], 404);
 });
 
