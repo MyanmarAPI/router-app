@@ -4,6 +4,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 use Config;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use App\Jobs\SendAnalytics;
 
@@ -19,7 +20,7 @@ class Controller extends BaseController
 
             try {
 
-                $response = $client->get('api/'.$resource, [
+                $response = $client->get($resource, [
                     'query' => $request->query()
                 ]);
                 
@@ -27,6 +28,11 @@ class Controller extends BaseController
 
                 $response = $e->getResponse();
                 
+            } catch (ConnectException $e) {
+
+                //Change response fromat
+                return response()->json(config('status.messages.500'), 500);
+
             }
 
             //Push Queue Job for Analytics
