@@ -2,8 +2,8 @@
 
 return [
 	'auth' => [
-		'base_url' => 'http://api.mmelection.dev/', //Auth App Base url
-		'uri' => 'api/authenticate' //Auth Uri
+		'base_url' => 'http://maepaysoh.org/', //Auth App Base url
+		'uri' => 'api/v1/authenticate' //Auth Uri
 	],
 	'docs_url' => 'http://developer.mmelection.dev/docs', //Main Documentation Url
 	'analytics' => [
