@@ -16,7 +16,9 @@ If you don't have composer installed in your machine, please check [here](https:
 
 2. Add Database Information in **.env** file.
 
-3. If you are going to use **redis** for Queue Driver, please configure redis database information in **config/database.php**
+3. Add **API_APP_KEY** and **API_APP_SECRET** in **.env** file. (You can check **.env.example**)  
+
+4. If you are going to use **redis** for Queue Driver, please configure redis database information in **config/database.php**
 
 ####Add End Point
 
@@ -28,6 +30,10 @@ Add your endpoints information in following array format in **config/endpoints.p
             'base' => 'http://base-url-of-endpoint.com/endpoint',
             'docs' => 'http://url-to-endpoint-docmentation.com/docs'
 		]
+
+#####API URL Format
+
+		http://your-domain.org/{endpoint-uri}/api/{resource-uri}?api_key=your-api-key
 
 ####Packages 
 * [Lumen PHP Framework](http://lumen.laravel.com)
