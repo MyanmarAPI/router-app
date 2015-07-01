@@ -38,10 +38,7 @@ class Handler extends ExceptionHandler {
     public function render($request, Exception $e)
     {
         if ($e instanceof NotFoundHttpException) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Request url not found.'
-            ], 404);
+            return response()->json(config('status.messages.404'), 404);
         }
 
         return parent::render($request, $e);
