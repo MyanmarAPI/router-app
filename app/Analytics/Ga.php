@@ -16,7 +16,7 @@ class Ga
 	 *
 	 * @return void
 	 **/
-	public function sendPageView($path) {
+	public function sendPageView($path, $app_info) {
 
 		$analytics = new Analytics();
 
@@ -30,9 +30,11 @@ class Ga
 		$analytics
 		    ->setProtocolVersion($version)
 		    ->setTrackingId($tracking_id)
-		    ->setClientId('12345678') //ToDo : replace with uuid
+		    ->setClientId($app_info['user_id']) //ToDo : replace with uuid
 		    ->setQueueTime(1000)
-		    ->setDocumentPath($path);
+		    ->setDocumentPath($path)
+		    ->setApplicationName($app_info['name'])
+		    ->setApplicationId($app_info['_id']);
 
 		$sent = $analytics->sendPageview();
 

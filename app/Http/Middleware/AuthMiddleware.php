@@ -49,7 +49,7 @@ class AuthMiddleware {
                 break;
             
             case 200:
-                //dd($auth_res->json());
+                $request->session()->put('resquest_user', $auth_res->json());
                 return $next($request); 
             break;
 

@@ -16,16 +16,21 @@ class SendAnalytics extends Job implements SelfHandling, ShouldQueue
 
     private $request_path;
 
+    private $app_info;
+
     /**
      * Create a new job instance.
      *
      * @param  User  $user
      * @return void
      */
-    public function __construct($request_path)
+    public function __construct($request_path, $app_info)
     {
 
         $this->request_path = $request_path;
+
+        $this->app_info = $app_info;
+
     }
 
     /**
@@ -37,7 +42,7 @@ class SendAnalytics extends Job implements SelfHandling, ShouldQueue
     public function handle(Ga $ga)
     {
 
-        $ga->sendPageview($this->request_path);
+        $ga->sendPageview($this->request_path, $this->app_info);
 
     }
 }
