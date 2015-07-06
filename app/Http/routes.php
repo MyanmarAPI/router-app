@@ -22,11 +22,14 @@ $app->get('/', function() use ($app) {
 
 $app->group(['middleware' => 'auth'], function($app)
 {
-	$app->get('{endpoint}/api/{resource}', [
-		'as' => 'api.endpoint',
-		'uses' => 'App\Http\Controllers\Controller@getEndpoint'
-	]);
+	$app->get('{endpoint}', [
+        'as' => 'api.endpoint',
+        'uses' => 'App\Http\Controllers\Controller@getEndpoint'
+    ]);
+
+    $app->get('{endpoint}/{resource}', [
+        'as' => 'api.endpoint.resource',
+        'uses' => 'App\Http\Controllers\Controller@getEndpoint'
+    ]);
 });
-
-
 

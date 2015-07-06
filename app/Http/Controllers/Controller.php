@@ -7,12 +7,19 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use App\Jobs\SendAnalytics;
+//use App\Analytics\ApiReport;
 
 class Controller extends BaseController
 {
-    public function getEndpoint(Request $request, $endpoint, $resource) {
+    public function getEndpoint(Request $request, $endpoint, $resource = null) {
 
     	$endpoints = config('endpoints');
+
+        $request_app = $request->session()->get('resquest_user');
+
+        if (!$resource) {
+            $resource = "/";
+        }
 
     	if (array_key_exists($endpoint, $endpoints)) {
 
@@ -21,6 +28,7 @@ class Controller extends BaseController
             try {
 
                 $response = $client->get($resource, [
+                    //Header Keys
                     'query' => $request->query()
                 ]);
                 
@@ -30,13 +38,9 @@ class Controller extends BaseController
                 
             } catch (ConnectException $e) {
 
-                //Change response fromat
                 return response()->json(config('status.messages.500'), 500);
 
             }
-
-            //Push Queue Job for Analytics
-            $this->dispatch(new SendAnalytics($request->path()));
 
             switch ($response->getStatusCode()) {
 
@@ -53,6 +57,21 @@ class Controller extends BaseController
                     break;
 
                 case 200:
+
+                    //Internal API Report
+                    /*$report = new ApiReport;
+
+                    $resource_info = [
+                        'endpoint' => $endpoint,
+                        'resource' => $resource,
+                        'query' => $request->query()
+                    ];*/
+
+                    //$report->makeReport($request, $request_app, $resource_info);
+
+                    //Push Queue Job for Google Analytics
+                    $this->dispatch(new SendAnalytics($request->path(), $request_app));
+
                     return $response->json();
                     break;
             }
