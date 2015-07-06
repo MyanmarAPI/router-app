@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
 	'candidates' => [
@@ -7,8 +7,8 @@ return [
 		'base' => '',
 		'docs' => ''
 	],
-	'qna' => [
-		'name' => 'Q&A API',
+	'faq' => [
+		'name' => 'FAQ API',
 		'desc' => '',
 		'base' => '',
 		'docs' => ''
@@ -18,5 +18,12 @@ return [
 		'desc' => '',
 		'base' => '',
 		'docs' => ''
+	],
+	'party' => [
+		'name' => 'Party API',
+		'desc' => 'Return Party List On Myanmar Election',
+		'base' => 'http://10.240.207.246:8080',
+		'docs' => ''
 	]
+
 ];
