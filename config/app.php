@@ -5,7 +5,7 @@ return [
 		'base_url' => 'http://maepaysoh.org/', //Auth App Base url
 		'uri' => 'api/v1/authenticate' //Auth Uri
 	],
-	'docs_url' => 'http://developer.mmelection.dev/docs', //Main Documentation Url
+	'docs_url' => 'http://maepaysoh.org/docs', //Main Documentation Url
 	'analytics' => [
 		'ga' => [
 			'version' => 1,
