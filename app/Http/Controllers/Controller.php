@@ -15,7 +15,7 @@ class Controller extends BaseController
 
     	$endpoints = config('endpoints');
 
-        $request_app = $request->session()->get('resquest_user');
+        //$request_app = $request->session()->get('resquest_user');
 
         if (!$resource) {
             $resource = "/";
