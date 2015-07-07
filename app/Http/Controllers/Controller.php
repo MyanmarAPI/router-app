@@ -14,7 +14,13 @@ class Controller extends BaseController
 
     public function endpointList()
     {
-        return response()->json(config('endpoints'));
+        $endpoints = config('endpoints');
+
+        $endpoints = array_map(function($ep){
+            unset($ep["base"]);
+            return $ep;
+        }, $endpoints);
+        return response()->json($endpoints);
     }
 
     public function getEndpoint(Request $request, $endpoint, $resource = null) {
