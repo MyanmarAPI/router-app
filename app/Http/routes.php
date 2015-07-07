@@ -20,6 +20,11 @@ $app->get('/', function() use ($app) {
     ], 404);
 });
 
+$app->get('endpoints', [
+    'as' => 'api.endpoint.list',
+    'uses' => 'App\Http\Controllers\Controller@endpointList'
+]);
+
 $app->group(['middleware' => 'auth'], function($app)
 {
 	$app->get('{endpoint}', [
@@ -32,9 +37,4 @@ $app->group(['middleware' => 'auth'], function($app)
         'uses' => 'App\Http\Controllers\Controller@getEndpoint'
     ]);
 });
-
-$app->get('endpoints', [
-    'as' => 'api.endpoint.list',
-    'uses' => 'App\Http\Controllers\Controller@endpointList'
-]);
 
