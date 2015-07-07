@@ -11,6 +11,12 @@ use App\Jobs\SendAnalytics;
 
 class Controller extends BaseController
 {
+
+    public function endpointList()
+    {
+        return response()->json(config('endpoints'));
+    }
+
     public function getEndpoint(Request $request, $endpoint, $resource = null) {
 
     	$endpoints = config('endpoints');

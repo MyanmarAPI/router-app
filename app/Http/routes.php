@@ -33,3 +33,8 @@ $app->group(['middleware' => 'auth'], function($app)
     ]);
 });
 
+$app->get('endpoints', [
+    'as' => 'api.endpoint.list',
+    'uses' => 'App\Http\Controllers\Controller@endpointList'
+]);
+
