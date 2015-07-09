@@ -10,7 +10,8 @@
         "theiconic/php-ga-measurement-protocol": "^1.1",
         "hexcores/mongo-lite": "dev-master",
         "predis/predis": "~1.0",
-        "illuminate/redis": "5.1.*"
+        "illuminate/redis": "5.1.*",
+        "nesbot/carbon": "~1.14"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
