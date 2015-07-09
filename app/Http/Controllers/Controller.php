@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use App\Jobs\SendAnalytics;
-//use App\Analytics\ApiReport;
+use App\Jobs\SaveReport;
 
 class Controller extends BaseController
 {
@@ -20,6 +20,7 @@ class Controller extends BaseController
             unset($ep["base"]);
             return $ep;
         }, $endpoints);
+        
         return response()->json($endpoints);
     }
 
@@ -70,21 +71,10 @@ class Controller extends BaseController
 
                 case 200:
 
-                    //Internal API Report
-                    /*$report = new ApiReport;
-
-                    $resource_info = [
-                        'endpoint' => $endpoint,
-                        'resource' => $resource,
-                        'query' => $request->query()
-                    ];*/
-
-                    //$report->makeReport($request, $request_app, $resource_info);
-
-                    //Push Queue Job for Google Analytics
-                    $this->dispatch(new SendAnalytics($request->path(), $request_app));
+                    $this->pushAnalyticJobs($request, $endpoint, $resource, $request_app);
 
                     return $response->json();
+
                     break;
             }
     		
@@ -93,4 +83,31 @@ class Controller extends BaseController
     	return response()->json(config('status.messages.404'), 404);
 
     }
+
+    private function pushAnalyticJobs(Request $request, $endpoint, $resource, $request_app)
+    {
+
+        if (env('GA_ANALYTIC')) {
+
+            //Push Queue Job for Google Analytics
+            $this->dispatch(new SendAnalytics($request->path(), $request_app));   
+
+        }
+
+        if (env('ANALYTIC_REPORT')) {
+            
+            //Push Queue Job for Internal Analytic Report
+            $resource_info = [
+                'endpoint' => $endpoint,
+                'resource' => $resource,
+                'query' => $request->query(),
+                'path' => $request->path()
+            ];
+
+            $this->dispatch(new SaveReport($request->getClientIp(), $request_app, $resource_info));
+
+        }
+
+    }
+
 }

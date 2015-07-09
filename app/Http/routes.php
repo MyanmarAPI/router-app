@@ -27,6 +27,7 @@ $app->get('endpoints', [
 
 $app->group(['middleware' => 'auth'], function($app)
 {
+    
 	$app->get('{endpoint}', [
         'as' => 'api.endpoint',
         'uses' => 'App\Http\Controllers\Controller@getEndpoint'
@@ -36,5 +37,6 @@ $app->group(['middleware' => 'auth'], function($app)
         'as' => 'api.endpoint.resource',
         'uses' => 'App\Http\Controllers\Controller@getEndpoint'
     ]);
+
 });
 
