@@ -42,7 +42,7 @@ return [
 	'party' => [
 		'name' => 'Party API',
 		'desc' => 'Return Party List On Myanmar Election',
-		'base' => 'http://107.167.184.145:8080',
+		'base' => 'http://10.240.207.246:8080/',
 		'docs' => '',
 		'API_KEY' => '', 
 		'API_SECRET' => ''
