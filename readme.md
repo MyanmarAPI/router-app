@@ -32,7 +32,7 @@ If you don't have composer installed in your machine, please check [here](https:
 
 3. Add **API_APP_KEY** and **API_APP_SECRET** in **.env** file for router app to interact with endpoints and other app parts.
 
-		## This is an example keys. Please generate your own keys at server deployment.
+		## These are example keys. Please generate your own keys at server deployment.
 
 		X-API-KEY=cPjF5lGG8NVCbSiueyWFrwTkLtS3aJxE
 		X-API-SECRET=MpFLIgqhj5EDl8jmufDn5rvX1ItYoeCm
@@ -44,7 +44,7 @@ If you don't have composer installed in your machine, please check [here](https:
 
 5. Add **AUTH_APP_KEY** and **AUTH_APP_SECRET** to interact with main application Auth.
 		
-		## This is an example keys. Please generate your own keys at server deployment.
+		## These are example keys. Please generate your own keys at server deployment.
 
 		AUTH_APP_KEY=3zkx76mmdXAnaqmMnQ7jcbii2fCGlx7o
 		AUTH_APP_SECRET=6CkWAf2gun14B6tKKmXGWh3nHKQgbqh7
