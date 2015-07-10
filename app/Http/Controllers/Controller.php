@@ -45,7 +45,10 @@ class Controller extends BaseController
             try {
 
                 $response = $client->get($resource, [
-                    //Header Keys
+                    'headers' => [
+                        'X-API-KEY' => $endpoints[$endpoint]['API_KEY'],
+                        'X-API-SECRET' => $endpoints[$endpoint]['API_SECRET']
+                    ],
                     'query' => $request->query()
                 ]);
                 

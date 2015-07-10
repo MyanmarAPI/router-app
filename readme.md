@@ -28,12 +28,14 @@ Add your endpoints information in following array format in **config/endpoints.p
             'name' => 'Name of the endpoint',
             'desc' => 'Endpoint description',
             'base' => 'http://base-url-of-endpoint.com/endpoint',
-            'docs' => 'http://url-to-endpoint-docmentation.com/docs'
+            'docs' => 'http://url-to-endpoint-docmentation.com/docs',
+            'API_KEYS' => 'SomeRandomKey', //Leave it blank if your endpoint isn't filter with these keys.
+            'API_SECRET' => 'SomeRandomSecret',
 		]
 
 #####API URL Format
 
-		http://your-domain.org/{endpoint-uri}/api/{resource-uri}?api_key=your-api-key
+		http://your-domain.org/{endpoint-uri}/{resource-uri}?api_key=your-api-key
 
 ####Packages 
 * [Lumen PHP Framework](http://lumen.laravel.com)
