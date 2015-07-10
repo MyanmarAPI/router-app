@@ -26,7 +26,7 @@ return [
 	'faq' => [
 		'name' => 'FAQ API',
 		'desc' => '',
-		'base' => '',
+		'base' => env('FAQ_BASE'),
 		'docs' => '',
 		'API_KEY' => env('FAQ_KEY'),
 		'API_SECRET' => env('FAQ_SECRET')
