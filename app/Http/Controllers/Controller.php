@@ -17,8 +17,12 @@ class Controller extends BaseController
         $endpoints = config('endpoints');
 
         $endpoints = array_map(function($ep){
-            unset($ep["base"]);
-            return $ep;
+            $ep_data = [
+                'name' => $ep["name"],
+                'desc' => $ep["desc"],
+                'docs' => $ep["docs"]
+            ];
+            return $ep_data;
         }, $endpoints);
         
         return response()->json($endpoints);
