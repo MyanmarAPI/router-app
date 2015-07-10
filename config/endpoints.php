@@ -28,7 +28,7 @@ return [
 		'desc' => '',
 		'base' => '',
 		'docs' => '',
-		'API_KEYS' => env('FAQ_KEY'),
+		'API_KEY' => env('FAQ_KEY'),
 		'API_SECRET' => env('FAQ_SECRET')
 	],
 	'geolocation' => [
@@ -36,7 +36,7 @@ return [
 		'desc' => '',
 		'base' => '',
 		'docs' => '',
-		'API_KEYS' => '',
+		'API_KEY' => '',
 		'API_SECRET' => ''
 	],
 	'party' => [
@@ -44,7 +44,7 @@ return [
 		'desc' => 'Return Party List On Myanmar Election',
 		'base' => 'http://107.167.184.145:8080',
 		'docs' => '',
-		'API_KEYS' => '', 
+		'API_KEY' => '', 
 		'API_SECRET' => ''
 	],
 
