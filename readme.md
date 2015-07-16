@@ -30,7 +30,7 @@ If you don't have composer installed in your machine, please check [here](https:
 		DB_USERNAME=
 		DB_PASSWORD=
 
-3. Add **API_APP_KEY** and **API_APP_SECRET** in **.env** file for router app to interact with endpoints and other app parts.
+3. Add **X-API-KEY** and **X-API-SECRET** in **.env** file for router app to interact with endpoints and other app parts.
 
 		## These are example keys. Please generate your own keys at server deployment.
 
