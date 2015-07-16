@@ -118,4 +118,218 @@ class Report extends Model
 		return false;
 	}
 
+	/**
+	 * Get Hourly Hits
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getHourly($date, $filter = [])
+	{	
+
+		$pipeline = [];
+		$pipeline['_id'] = '$date';
+
+		for ($i=0; $i < 24; $i++) { 
+
+			$pipeline[$date.' '.$i.':00'] = ['$sum' => '$hour.'.$i];
+
+		}
+
+		$result = $this->collection()->aggregate(
+			[
+				'$group' => $pipeline
+			], 
+			[
+				'$match' => [
+					'_id' => new MongoDate(strtotime($date." 00:00:00"))
+				]
+			]);
+
+		$graph_data = [];
+
+		if (!empty($result['result'])) {
+
+			unset($result['result'][0]['_id']);
+
+			foreach ($result['result'][0] as $key => $value) {
+				$graph_data[] = [
+					'period' => $key,
+					'value' => $value
+				]; 
+			}
+		} else {
+
+			for ($i=0; $i < 24 ; $i++) { 
+				$graph_data[] = [
+					'period' => $date.' '.$i.':00',
+					'value' => 0
+				]; 
+			}
+
+		}
+
+		return $graph_data;
+
+	}
+
+	/**
+	 * Get Daily Hit
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getDaily($from, $to, $filter = [])
+	{
+
+		$result = $this->collection()->aggregate(
+			[
+				'$group' => [
+					'_id' => '$date',
+					'daily' => ['$sum' => '$daily']
+				]
+			], 
+			[
+				'$match' => [
+					'_id' => [
+						'$gte' => new MongoDate(strtotime($from." 00:00:00")),
+						'$lte' => new MongoDate(strtotime($to." 00:00:00"))
+					]
+				]
+			]);
+
+		$result_data = [];
+
+		foreach ($result['result'] as $data) {
+			$result_data[date("Y-m-d", $data['_id']->sec)] = $data['daily'];
+		}	
+
+		$from_date = $from;
+
+		// Date Loop Snippet Credit 
+		// http://www.if-not-true-then-false.com/2009/php-loop-through-dates-from-date-to-date-with-strtotime-function/
+		
+		$analytic_data = [];
+	
+		while (strtotime($from_date) <= strtotime($to)) {
+
+			if (array_key_exists($from_date, $result_data)) {
+				$hit_count = $result_data[$from_date];
+			} else {
+				$hit_count = 0;
+			}
+
+			$analytic_data[] = [
+				'period' => $from_date,
+				'value' => $hit_count
+			];
+			
+			$from_date = date ("Y-m-d", strtotime("+1 day", strtotime($from_date)));
+		}
+
+		return $analytic_data;
+
+	}
+
+	/**
+	 * Get Monthly Analytic Data
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getMonthly($from, $to, $filter = [])
+	{
+		$result = $this->collection()->aggregate(
+			[
+				'$group' => [
+					'_id' => ['month' => ['$month' => '$date'], 'year' => ['$year' => '$date']],
+					'hit' => ['$sum' => '$daily']
+				]
+			]
+			//Need to add Match
+			);
+
+		$result_data = [];
+
+		foreach ($result['result'] as $d) {
+			$result_data[$d['_id']['year'].'-'.$d['_id']['month']] = $d['hit'];
+		}
+
+		$from_date = $from;
+
+		$analytic_data = [];
+
+		while (strtotime($from_date) <= strtotime($to)) {
+
+			if (array_key_exists($from_date, $result_data)) {
+				$hit_count = $result_data[$from_date];
+			} else {
+				$hit_count = 0;
+			}
+
+			$analytic_data[] = [
+				'period' => $from_date,
+				'value' => $hit_count
+			];
+
+			$from_date = date ("Y-n", strtotime("+1 month", strtotime($from_date)));
+		}
+
+		return $analytic_data;
+
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getTotalHits()
+	{
+		return [
+			'endpoint' => [
+				'title' => 'Endpoint',
+				'data' => $this->getHitbyInfo('endpoint')
+			],
+			'api_key' => [
+				'title' => 'API Key',
+				'data' => $this->getHitbyInfo('api_key')
+			],
+			'ip_address' => [
+				'title' => 'IP Address',
+				'data' => $this->getHitbyInfo('ip_address')
+			],
+			'user_id' => [
+				'title' => 'User ID',
+				'data' => $this->getHitbyInfo('user_id')	
+			]
+		];
+	}
+
+	/**
+	 * Get Total Hits by Endpoint
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getHitbyInfo($info = 'endpoint')
+	{
+		$result = $this->collection()->aggregate(
+			[
+				'$group' => [
+					'_id' => '$'.$info,
+					'hit' => ['$sum' => '$daily']
+				]
+			]);
+
+		return array_map(function($data){
+
+			$data['info'] = $data['_id'];
+			unset($data['_id']);
+			return $data;
+
+		}, $result['result']);
+	}
+
 } // END class Report

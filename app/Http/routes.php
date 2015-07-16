@@ -20,11 +20,43 @@ $app->get('/', function() use ($app) {
     ], 404);
 });
 
+//Analytic API
+
+$app->group([
+        'prefix' => 'analytics/v1',
+        'namespace' => 'App\Http\Controllers',
+        'middleware' => 'app2app'
+        ], function($app){
+
+    $app->get('all/today', [
+        'as' => 'api.analytics.all.today',
+        'uses' => 'AnalyticApiController@getAllDefaults'
+    ]);
+
+    $app->get('hourly', [
+        'as' => 'api.analytics.hourly',
+        'uses' => 'AnalyticApiController@getHourly'
+    ]);
+
+    $app->get('daily', [
+        'as' => 'api.analytics.daily',
+        'uses' => 'AnalyticApiController@getDaily'
+    ]);
+
+    $app->get('monthly', [
+        'as' => 'api.analytics.monthly',
+        'uses' => 'AnalyticApiController@getMonthly'
+    ]);
+
+});
+
+//Endpoint List
 $app->get('endpoints', [
     'as' => 'api.endpoint.list',
     'uses' => 'App\Http\Controllers\Controller@endpointList'
 ]);
 
+//Authentication
 $app->group(['middleware' => 'auth'], function($app)
 {
     
