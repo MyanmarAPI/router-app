@@ -85,3 +85,7 @@ Add your endpoints information in following array format in **config/endpoints.p
 * [theiconic/php-ga-measurement-protocol](https://github.com/theiconic/php-ga-measurement-protocol)
 * [hexcores/mongo-lite](https://github.com/hexcores/mongo-lite)
 * [illuminate/redis](https://github.com/illuminate/redis)
+
+####LICENSE
+
+**GNU Lesser General Public License v3 (LGPL-3)**
