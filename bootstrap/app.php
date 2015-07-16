@@ -65,7 +65,7 @@ $app->configure('database');
 
 $app->routeMiddleware([
 	'auth' => 'App\Http\Middleware\AuthMiddleware',
-	'analytics' => 'App\Http\Middleware\AnalyticsMiddleware'
+	'app2app' => 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader',
 ]);
 
  $app->middleware([
