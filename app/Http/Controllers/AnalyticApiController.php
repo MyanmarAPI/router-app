@@ -15,7 +15,6 @@ class AnalyticApiController extends BaseController
 	public function __construct(Report $report)
 	{
 		$this->model = $report;
-		header("Access-Control-Allow-Origin: *");
 	}
 
 	public function getAllDefaults(Request $request)

@@ -66,6 +66,7 @@ $app->configure('database');
 $app->routeMiddleware([
 	'auth' => 'App\Http\Middleware\AuthMiddleware',
 	'app2app' => 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader',
+    'cros' => 'App\Http\Middleware\CORSMiddleware'
 ]);
 
  $app->middleware([
