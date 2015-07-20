@@ -25,7 +25,7 @@ $app->get('/', function() use ($app) {
 $app->group([
         'prefix' => 'analytics/v1',
         'namespace' => 'App\Http\Controllers',
-        'middleware' => 'app2app|cros'
+        'middleware' => 'app2app'
         ], function($app){
 
     $app->get('all/today', [
