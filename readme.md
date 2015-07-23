@@ -76,9 +76,36 @@ Add your endpoints information in following array format in **config/endpoints.p
             'API_SECRET' => 'SomeRandomSecret',
 		]
 
-#####API URL Format
+#####How to use API router
 
-		http://your-domain.org/{endpoint-uri}/{resource-uri}?api_key=your-api-key
+For unique user tracking, you need to generate a token for each user of your application and use that token to request the data.
+
+1. Generate token for each user
+		
+   Send POST request to
+        http://your-domain.org/token/generate
+   With api_key 
+   
+   	{
+        	api_key : 'your-api-key'
+     	}
+        
+   You will get a response like this
+   	{
+    		"_meta": {
+        	"status": "ok",
+        	"count": 1,
+        	"api_version": 1
+    	},
+    	"data": {
+        	"token": "user-token-key"
+    		}
+		}
+        
+2. Request data with user token
+        
+	Request Data
+		http://your-domain.org/{endpoint-uri}/{resource-uri}?token=user-token-key
 
 ####Packages 
 * [Lumen PHP Framework](http://lumen.laravel.com)
