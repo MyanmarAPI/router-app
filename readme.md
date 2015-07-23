@@ -106,12 +106,17 @@ For unique user tracking, you need to generate a token for each user of your app
         
 	Request Data
 		http://your-domain.org/{endpoint-uri}/{resource-uri}?token=user-token-key
+        
+	Get Data in Zawgyi Font
+    	http://your-domain.org/{endpoint-uri}/{resource-uri}?font=zawgyi&token=user-token-key
 
 ####Packages 
 * [Lumen PHP Framework](http://lumen.laravel.com)
 * [theiconic/php-ga-measurement-protocol](https://github.com/theiconic/php-ga-measurement-protocol)
 * [hexcores/mongo-lite](https://github.com/hexcores/mongo-lite)
 * [illuminate/redis](https://github.com/illuminate/redis)
+* [hexcores/api-support](https://github.com/hexcores/api-support)
+* [rabbit-converter/rabbit-php](https://github.com/Rabbit-Converter/Rabbit-PHP)
 
 ####LICENSE
 
