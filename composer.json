@@ -11,7 +11,8 @@
         "hexcores/mongo-lite": "dev-master",
         "predis/predis": "~1.0",
         "illuminate/redis": "5.1.*",
-        "hexcores/api-support": "dev-master"
+        "hexcores/api-support": "dev-master",
+        "rabbit-converter/rabbit-php": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"

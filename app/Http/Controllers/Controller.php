@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\Request;
 use App\Jobs\SendAnalytics;
 use App\Jobs\SaveReport;
+use Rabbit;
 
 class Controller extends BaseController
 {
@@ -94,6 +95,11 @@ class Controller extends BaseController
                 case 200:
 
                     $this->pushAnalyticJobs($request, $endpoint, $resource, $request_app);
+
+                    if($request->has('font') && $request->input('font') == 'zawgyi') {
+                        $zawgyi = Rabbit::uni2zg(json_encode($response->json()));    
+                        return response()->json(json_decode($zawgyi));
+                    }
 
                     return $response->json();
 
