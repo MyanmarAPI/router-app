@@ -23,14 +23,21 @@ class Report extends Model
 	 **/
 	public function newReport($ip_address, $app_info, $resource_info)
 	{
-		unset($resource_info['query']['api_key']);
+		if (isset($resource_info['query']['api_key'])) {
+			unset($resource_info['query']['api_key']);
+		}
+
+		if (isset($resource_info['query']['token'])) {
+			unset($resource_info['query']['token']);
+		}
 
 		$time = $this->prepareTime();
 
 		return $this->getCollection()->insert([
 			'user_id' => $app_info['user_id'],
-			'api_key' => $app_info['key'],
-			'app_id' => $app_info['_id'],
+			'api_key' => $app_info['app_key'],
+			'user_token' => $app_info['token'],
+			//'app_id' => $app_info['_id'],
 			'path' => $resource_info['path'],
 			'endpoint' => $resource_info['endpoint'],
 			'resource' => $resource_info['resource'],
@@ -57,7 +64,7 @@ class Report extends Model
 		$time = $this->prepareTime();
 
 		return $this->getCollection()->update([
-				'api_key' => $app_info['key'],
+				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
 				'ip_address' => $ip_address,
 				'date' => new MongoDate(strtotime($time['now']." 00:00:00"))
@@ -103,7 +110,7 @@ class Report extends Model
 		$now = Carbon::now();
 
 		$report = $this->getCollection()->first([
-				'api_key' => $app_info['key'],
+				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
 				'ip_address' => $ip_address,
 				'date' => new MongoDate(strtotime($now->toDateString()." 00:00:00"))

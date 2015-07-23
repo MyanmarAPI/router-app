@@ -30,11 +30,11 @@ class Ga
 		$analytics
 		    ->setProtocolVersion($version)
 		    ->setTrackingId($tracking_id)
-		    ->setClientId($app_info['user_id']) //ToDo : replace with uuid
+		    ->setClientId($app_info['token']) //ToDo : replace with uuid
 		    ->setQueueTime(1000)
 		    ->setDocumentPath($path)
-		    ->setApplicationName($app_info['name'])
-		    ->setApplicationId($app_info['_id']);
+		    //->setApplicationName($app_info['name'])
+		    ->setApplicationId($app_info['app_id']);
 
 		$sent = $analytics->sendPageview();
 
