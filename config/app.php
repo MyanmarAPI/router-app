@@ -3,7 +3,8 @@
 return [
 	'auth' => [
 		'base_url' => 'http://maepaysoh.org/', //Auth App Base url
-		'uri' => 'api/v1/authenticate' //Auth Uri
+		'uri' => 'api/v1/authenticate', //Auth Uri
+		'token_uri' => 'api/v1/token/generate' //Token Generate Uri
 	],
 	'docs_url' => 'http://maepaysoh.org/docs', //Main Documentation Url
 	'analytics' => [
