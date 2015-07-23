@@ -15,11 +15,11 @@ class AuthMiddleware {
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->has('api_key')) {
+        if (!$request->has('token')) {
             return response()->json(config('status.messages.404'), 404);
         }
 
-        $api_key = $request->input('api_key');
+        $token = $request->input('token');
 
         //Check for API Authentication
     	$auth_url = config('app.auth');
@@ -32,7 +32,7 @@ class AuthMiddleware {
 
         try {
 
-            $auth_res = $client->get($auth_url['uri'].'/'.$api_key, [
+            $auth_res = $client->get($auth_url['uri'].'/'.$token, [
                             'headers' => $headers
                         ]);
 

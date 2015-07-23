@@ -56,6 +56,12 @@ $app->get('endpoints', [
     'uses' => 'App\Http\Controllers\Controller@endpointList'
 ]);
 
+//Generate User Token
+$app->post('token/generate', [
+    'as' => 'api.generate.token',
+    'uses' => 'App\Http\Controllers\Controller@generateToken'
+]);
+
 //Authentication
 $app->group(['middleware' => 'auth'], function($app)
 {
