@@ -12,6 +12,8 @@ class AnalyticApiController extends BaseController
 
 	private $model;
 
+	private $filterKeys = ['user_id', 'api_key', 'endpoint', 'token'];
+
 	public function __construct(Report $report)
 	{
 		$this->model = $report;
@@ -35,6 +37,9 @@ class AnalyticApiController extends BaseController
 
 	public function getDaily(Request $request, $json = true)
 	{
+
+		$filters = $this->getFilterKeys($request);
+
 		$from = $request->input('from');
 
 		$to = $request->input('to');
@@ -47,7 +52,7 @@ class AnalyticApiController extends BaseController
 
 		$result["date_range"] = $from .' to '.$to;
 
-		$result["data"] = $this->model->getDaily($from, $to);
+		$result["data"] = $this->model->getDaily($from, $to, $filters);
 
 		if (!$json) {
 			return $result;
@@ -58,6 +63,8 @@ class AnalyticApiController extends BaseController
 
 	public function getHourly(Request $request, $json = true)
 	{
+		$filters = $this->getFilterKeys($request);
+
 		$date = $request->input('date');
 
 		if (!$date) {
@@ -66,7 +73,7 @@ class AnalyticApiController extends BaseController
 
 		$result["date_range"] = $date;
 
-		$result["data"] = $this->model->getHourly($date);
+		$result["data"] = $this->model->getHourly($date, $filters);
 
 		if (!$json) {
 			return $result;
@@ -77,6 +84,9 @@ class AnalyticApiController extends BaseController
 
 	public function getMonthly(Request $request, $json = true)
 	{
+
+		$filters = $this->getFilterKeys($request);
+
 		$from = $request->input('from');
 
 		$to = $request->input('to');
@@ -90,7 +100,7 @@ class AnalyticApiController extends BaseController
 
 		$result["date_range"] = $from .' to '.$to;
 
-		$result["data"] = $this->model->getMonthly($from, $to);
+		$result["data"] = $this->model->getMonthly($from, $to, $filters);
 
 		if (!$json) {
 			return $result;
@@ -107,7 +117,9 @@ class AnalyticApiController extends BaseController
 
 	private function getFilterKeys(Request $request)
 	{
-
+		return array_filter($request->query(), function($key){
+			return in_array($key, $this->filterKeys);
+		}, ARRAY_FILTER_USE_KEY);
 	}
 
 	private function checkDateFormat($date)

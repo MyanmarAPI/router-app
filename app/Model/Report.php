@@ -143,11 +143,13 @@ class Report extends Model
 
 		}
 
+		$match_query = [
+				'date' => new MongoDate(strtotime($date." 00:00:00"))
+			];
+
 		$result = $this->collection()->aggregate(
 			[
-				'$match' => [
-					'date' => new MongoDate(strtotime($date." 00:00:00"))
-				]
+				'$match' => $this->getFinalMatchQuery($match_query, $filter)
 			],
 			[
 				'$group' => $pipeline
@@ -189,14 +191,15 @@ class Report extends Model
 	public function getDaily($from, $to, $filter = [])
 	{
 
+		$match_query = ['date' => [
+							'$gte' => new MongoDate(strtotime($from." 00:00:00")),
+							'$lte' => new MongoDate(strtotime($to." 00:00:00"))
+							]
+						];
+
 		$result = $this->collection()->aggregate(
 			[
-				'$match' => [
-					'date' => [
-						'$gte' => new MongoDate(strtotime($from." 00:00:00")),
-						'$lte' => new MongoDate(strtotime($to." 00:00:00"))
-					]
-				]
+				'$match' => $this->getFinalMatchQuery($match_query, $filter)
 			],
 			[
 				'$group' => [
@@ -249,14 +252,15 @@ class Report extends Model
 
 		$end_to_date = date("Y-m-t", strtotime($to));
 
+		$match_query = ['date' => [
+							'$gte' => new MongoDate(strtotime($from."-01 00:00:00")),
+							'$lte' => new MongoDate(strtotime($end_to_date." 00:00:00"))
+							]
+						];
+
 		$result = $this->collection()->aggregate(
 			[
-				'$match' => [
-					'date' => [
-						'$gte' => new MongoDate(strtotime($from."-01 00:00:00")),
-						'$lte' => new MongoDate(strtotime($end_to_date." 00:00:00"))
-					]
-				]
+				'$match' => $this->getFinalMatchQuery($match_query, $filter)
 			],
 			[
 				'$group' => [
@@ -264,7 +268,6 @@ class Report extends Model
 					'hit' => ['$sum' => '$daily']
 				]
 			]
-			//Need to add Match
 			);
 
 		$result_data = [];
@@ -348,6 +351,21 @@ class Report extends Model
 			return $data;
 
 		}, $result['result']);
+	}
+
+	/**
+	 * Merge Request Filter with default Match Query
+	 *
+	 * @return array
+	 * @author 
+	 **/
+	private function getFinalMatchQuery($match_query, $filter)
+	{
+		if (!empty($filter)) {
+			return array_merge($match_query, $filter);
+		}
+
+		return $match_query;
 	}
 
 } // END class Report
