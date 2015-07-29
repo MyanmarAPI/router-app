@@ -145,12 +145,12 @@ class Report extends Model
 
 		$result = $this->collection()->aggregate(
 			[
-				'$group' => $pipeline
-			], 
-			[
 				'$match' => [
-					'_id' => new MongoDate(strtotime($date." 00:00:00"))
+					'date' => new MongoDate(strtotime($date." 00:00:00"))
 				]
+			],
+			[
+				'$group' => $pipeline
 			]);
 
 		$graph_data = [];
@@ -191,17 +191,17 @@ class Report extends Model
 
 		$result = $this->collection()->aggregate(
 			[
-				'$group' => [
-					'_id' => '$date',
-					'daily' => ['$sum' => '$daily']
-				]
-			], 
-			[
 				'$match' => [
-					'_id' => [
+					'date' => [
 						'$gte' => new MongoDate(strtotime($from." 00:00:00")),
 						'$lte' => new MongoDate(strtotime($to." 00:00:00"))
 					]
+				]
+			],
+			[
+				'$group' => [
+					'_id' => '$date',
+					'daily' => ['$sum' => '$daily']
 				]
 			]);
 
@@ -246,7 +246,18 @@ class Report extends Model
 	 **/
 	public function getMonthly($from, $to, $filter = [])
 	{
+
+		$end_to_date = date("Y-m-t", strtotime($to));
+
 		$result = $this->collection()->aggregate(
+			[
+				'$match' => [
+					'date' => [
+						'$gte' => new MongoDate(strtotime($from."-01 00:00:00")),
+						'$lte' => new MongoDate(strtotime($end_to_date." 00:00:00"))
+					]
+				]
+			],
 			[
 				'$group' => [
 					'_id' => ['month' => ['$month' => '$date'], 'year' => ['$year' => '$date']],
