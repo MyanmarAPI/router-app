@@ -83,15 +83,18 @@ For unique user tracking, you need to generate a token for each user of your app
 1. Generate token for each user
 		
    Send POST request to
+   
         http://your-domain.org/token/generate
+        
    With api_key 
    
-   	{
+   		{
         	api_key : 'your-api-key'
      	}
         
    You will get a response like this
-   	{
+   
+   		{
     		"_meta": {
         	"status": "ok",
         	"count": 1,
