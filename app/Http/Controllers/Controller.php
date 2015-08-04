@@ -72,6 +72,10 @@ class Controller extends BaseController
 
                 return response()->json(config('status.messages.500'), 500);
 
+            } catch (\Exception $e) {
+                
+                return response()->json(config('status.messages.500'), 500);
+
             }
 
             switch ($response->getStatusCode()) {
