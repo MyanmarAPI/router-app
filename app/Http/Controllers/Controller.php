@@ -44,15 +44,11 @@ class Controller extends BaseController
      * @return json
      * @author 
      **/
-    public function getEndpoint(Request $request, $endpoint, $resource = null) {
+    public function getEndpoint(Request $request, $endpoint, $resource = "") {
 
     	$endpoints = config('endpoints');
 
         $request_app = $request->session()->get('resquest_user');
-
-        if (!$resource) {
-            $resource = "/";
-        }
 
     	if (array_key_exists($endpoint, $endpoints)) {
 
