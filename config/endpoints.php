@@ -31,13 +31,13 @@ return [
 		'API_KEY' => env('FAQ_KEY'),
 		'API_SECRET' => env('FAQ_SECRET')
 	],
-	'geolocation' => [
+	'geo' => [
 		'name' => 'Geolocation API',
 		'desc' => '',
-		'base' => '',
+		'base' => env('GEO_BASE'),
 		'docs' => '',
-		'API_KEY' => '',
-		'API_SECRET' => ''
+		'API_KEY' => env('GEO_KEY'),
+		'API_SECRET' => env('GEO_SECRET')
 	],
 	'party' => [
 		'name' => 'Party API',
