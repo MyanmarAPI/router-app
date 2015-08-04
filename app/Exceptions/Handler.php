@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler {
     public function render($request, Exception $e)
     {
         //Credit to Nyan Lynn Htut :D 
-        $status = $e->getStatusCode();
+        //$status = $e->getStatusCode();
         $message = $e->getMessage() ?: null;
 
         if ($e instanceof NotFoundHttpException) {
@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler {
             return response_error('Invalid Method call.');
         }
 
-        return response_error(!is_null($message) ?: 'Error occured!');
+        return response_error(!is_null($message) ? $message : 'Error occured!');
 
     }
 
