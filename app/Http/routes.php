@@ -63,7 +63,7 @@ $app->post('token/generate', [
 ]);
 
 //Authentication
-$app->group(['middleware' => 'auth'], function($app)
+$app->group(['middleware' => 'auth|etag'], function($app)
 {
     
 	$app->get('{endpoint}', [

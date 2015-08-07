@@ -19,7 +19,7 @@ $app = new Laravel\Lumen\Application(
 	realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -66,7 +66,8 @@ $app->configure('database');
 $app->routeMiddleware([
 	'auth' => 'App\Http\Middleware\AuthMiddleware',
 	'app2app' => 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader',
-    'cros' => 'App\Http\Middleware\CORSMiddleware'
+    'cros' => 'App\Http\Middleware\CORSMiddleware',
+    'etag' => 'App\Http\Middleware\ETagMiddleware'
 ]);
 
  $app->middleware([
