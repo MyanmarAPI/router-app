@@ -117,9 +117,7 @@ class AnalyticApiController extends BaseController
 
 	private function getFilterKeys(Request $request)
 	{
-		return array_filter($request->query(), function($key){
-			return in_array($key, $this->filterKeys);
-		}, ARRAY_FILTER_USE_KEY);
+		return array_intersect_key($request->query(), array_flip($this->filterKeys));
 	}
 
 	private function checkDateFormat($date)
