@@ -48,6 +48,11 @@ $app->group([
         'uses' => 'AnalyticApiController@getMonthly'
     ]);
 
+    $app->get('total-hits', [
+        'as' => 'api.analytics.total-hits',
+        'uses' => 'AnalyticApiController@getTotalHits'
+    ]);
+
 });
 
 //Endpoint List

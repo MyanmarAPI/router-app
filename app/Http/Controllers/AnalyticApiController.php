@@ -25,7 +25,7 @@ class AnalyticApiController extends BaseController
 		$results['daily'] = $this->getDaily($request, false);
 		$results['monthly'] = $this->getMonthly($request, false);
 
-		$results['total_hits'] = $this->model->getTotalHits();
+		//$results['total_hits'] = $this->getTotalHits($request, false);
 
 		return response()->json($results);
 	}
@@ -110,6 +110,19 @@ class AnalyticApiController extends BaseController
 
 	}
 
+	public function getTotalHits(Request $request, $json = true)
+	{
+
+		$result = $this->model->getTotalHits();
+
+		if (!$json) {
+			return $result;
+		}
+
+		return response()->json($result);
+
+	}
+
 	public function perMinute(Request $request)
 	{
 
@@ -117,12 +130,12 @@ class AnalyticApiController extends BaseController
 
 	private function getFilterKeys(Request $request)
 	{
-		return array_intersect_key($request->query(), array_flip($this->filterKeys));
+		return array_filter(array_intersect_key($request->query(), array_flip($this->filterKeys)));
 	}
 
-	private function checkDateFormat($date)
+	/*private function checkDateFormat($date)
 	{
 
-	}
+	}*/
 
 }
