@@ -50,7 +50,10 @@ class AnalyticApiController extends BaseController
 			$from = $now->subDays(10)->toDateString();
 		}
 
-		$result["date_range"] = $from .' to '.$to;
+		$result["date_range"] = [
+			"from" => $from,
+			"to" => $to
+		];
 
 		$result["data"] = $this->model->getDaily($from, $to, $filters);
 
@@ -71,7 +74,9 @@ class AnalyticApiController extends BaseController
 			$date = Carbon::now()->toDateString();
 		}
 
-		$result["date_range"] = $date;
+		$result["date_range"] = [
+			"date" => $date
+		];
 
 		$result["data"] = $this->model->getHourly($date, $filters);
 
@@ -98,7 +103,10 @@ class AnalyticApiController extends BaseController
 			$from = $from_time->year.'-'.$from_time->month;
 		}
 
-		$result["date_range"] = $from .' to '.$to;
+		$result["date_range"] = [
+			"from" => $from,
+			"to" => $to
+		];
 
 		$result["data"] = $this->model->getMonthly($from, $to, $filters);
 
