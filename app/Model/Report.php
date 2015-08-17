@@ -67,6 +67,7 @@ class Report extends Model
 				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
 				'ip_address' => $ip_address,
+				'user_token' => $app_info['token'],
 				'date' => new MongoDate(strtotime($time['now']." 00:00:00"))
 			], ['$inc' => [
 					'daily' => 1, 
@@ -113,6 +114,7 @@ class Report extends Model
 				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
 				'ip_address' => $ip_address,
+				'user_token' => $app_info['token'],
 				'date' => new MongoDate(strtotime($now->toDateString()." 00:00:00"))
 			]);
 		
