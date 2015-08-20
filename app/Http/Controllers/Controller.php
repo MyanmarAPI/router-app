@@ -101,7 +101,18 @@ class Controller extends BaseController
                         return response()->json(json_decode($zawgyi));
                     }
 
-                    return $response->json();
+                    $responseJson = $response->json();
+
+                    // Tweak for Retrofit Mapper
+                    if ( isset($responseJson['meta']['pagination']['links'])) {
+                        $links = $responseJson['meta']['pagination']['links'];
+
+                        if ( empty($links)) {
+                            $responseJson['meta']['pagination']['links'] = new \stdClass();
+                        }
+                    }
+
+                    return response()->json($responseJson);
 
                     break;
             }
