@@ -93,13 +93,13 @@ class Controller extends BaseController
 
                     $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp);
 
-                    if ( $thi->requestForZawgyi($request)) {
-                        $zawgyi = Rabbit::uni2zg(json_encode($response->json()));
-
-                        return response()->json(json_decode($zawgyi));
-                    }
-
                     $responseJson = $response->json();
+
+                    if ( $this->requestForZawgyi($request)) {
+                        $zawgyi = Rabbit::uni2zg(json_encode($responseJson));
+
+                        $responseJson = json_decode($zawgyi);
+                    }
 
                     // Tweak for Retrofit Mapper
                     if ( isset($responseJson['meta']['pagination']['links'])) {
