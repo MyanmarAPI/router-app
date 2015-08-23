@@ -16,8 +16,7 @@ class Controller extends BaseController
     /**
      * List of Endpoint avaliable
      *
-     * @return json
-     * @author 
+     * @return \Illuminate\Http\Response
      **/
     public function endpointList()
     {
@@ -37,9 +36,9 @@ class Controller extends BaseController
     /**
      * Get Endpoint Data
      *
-     * @param  $request Illuminate\Http\Request Request Object
-     * @param  $endpoint (string) Name of the Endpoint
-     * @param  $resource (string) Uri of endpoint resource
+     * @param  \Illuminate\Http\Request $request
+     * @param  string                   $endpoint Name of the Endpoint
+     * @param  string                   $resource Uri of endpoint resource
      * @return \Illuminate\Http\Response
      **/
     public function getEndpoint(Request $request, $endpoint, $resource = "") {
@@ -189,7 +188,8 @@ class Controller extends BaseController
      *
      * @param  \Illuminate\Http\Request $request
      * @param  string                   $endpoint Name of the Endpoint
-     * @param  string                   $resourceUri of endpoint resource
+     * @param  string                   $resource Uri of endpoint resource
+     * @param  array                    $requestApp Requested application.
      * @return void
      **/
     private function pushAnalyticJobs(Request $request, $endpoint, $resource, $requestApp)
