@@ -15,16 +15,16 @@ class AuthMiddleware {
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->has('token')) {
+        if ( ! $request->has('token')) {
             return response()->json(config('status.messages.404'), 404);
         }
 
         $token = $request->input('token');
 
         //Check for API Authentication
-    	$auth_url = config('app.auth');
+    	$authUrl = config('app.auth');
 
-        $client = new Client(['base_url' => $auth_url['base_url']]);
+        $client = new Client(['base_url' => $authUrl['base_url']]);
 
         //ToDo : Header or Auth Type need to change later according to Main App Authentication
         $headers = ['X-API-KEY' 		=> env('AUTH_APP_KEY'),
@@ -32,24 +32,24 @@ class AuthMiddleware {
 
         try {
 
-            $auth_res = $client->get($auth_url['uri'].'/'.$token, [
+            $response = $client->get($authUrl['uri'].'/'.$token, [
                             'headers' => $headers
                         ]);
 
         } catch (ClientException $e) {
 
-            $auth_res = $e->getResponse();
+            $response = $e->getResponse();
 
         }
 
-        switch ($auth_res->getStatusCode()) {
+        switch ($response->getStatusCode()) {
 
             case 401:
                 return response()->json(config('status.messages.401'), 401);
                 break;
             
             case 200:
-                $request->session()->put('resquest_user', $auth_res->json());
+                $request->session()->put('request_user', $response->json());
                 return $next($request); 
             break;
 

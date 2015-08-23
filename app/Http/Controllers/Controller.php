@@ -1,14 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use Laravel\Lumen\Routing\Controller as BaseController;
 use Config;
+use Rabbit;
 use GuzzleHttp\Client;
+use App\Jobs\SaveReport;
+use App\Jobs\SendAnalytics;
+use Illuminate\Http\Request;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use Illuminate\Http\Request;
-use App\Jobs\SendAnalytics;
-use App\Jobs\SaveReport;
-use Rabbit;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
@@ -23,13 +23,12 @@ class Controller extends BaseController
     {
         $endpoints = config('endpoints');
 
-        $endpoints = array_map(function($ep){
-            $ep_data = [
-                'name' => $ep["name"],
-                'desc' => $ep["desc"],
-                'docs' => $ep["docs"]
+        $endpoints = array_map(function($endpoint){
+            return [
+                'name' => $endpoint["name"],
+                'desc' => $endpoint["desc"],
+                'docs' => $endpoint["docs"]
             ];
-            return $ep_data;
         }, $endpoints);
         
         return response()->json($endpoints);
@@ -40,15 +39,14 @@ class Controller extends BaseController
      *
      * @param  $request Illuminate\Http\Request Request Object
      * @param  $endpoint (string) Name of the Endpoint
-     * @param  $resource (string) uri of endpoint resource
-     * @return json
-     * @author 
+     * @param  $resource (string) Uri of endpoint resource
+     * @return \Illuminate\Http\Response
      **/
     public function getEndpoint(Request $request, $endpoint, $resource = "") {
 
     	$endpoints = config('endpoints');
 
-        $request_app = $request->session()->get('resquest_user');
+        $requestApp = $request->session()->get('request_user');
 
     	if (array_key_exists($endpoint, $endpoints)) {
 
@@ -94,10 +92,11 @@ class Controller extends BaseController
 
                 case 200:
 
-                    $this->pushAnalyticJobs($request, $endpoint, $resource, $request_app);
+                    $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp);
 
-                    if($request->has('font') && $request->input('font') == 'zawgyi') {
-                        $zawgyi = Rabbit::uni2zg(json_encode($response->json()));    
+                    if ( $thi->requestForZawgyi($request)) {
+                        $zawgyi = Rabbit::uni2zg(json_encode($response->json()));
+
                         return response()->json(json_decode($zawgyi));
                     }
 
@@ -126,37 +125,38 @@ class Controller extends BaseController
     /**
      * Generate User Token
      *
-     * @return void
-     * @author 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      **/
     public function generateToken(Request $request)
     {
         if ($request->has('api_key')) {
 
-            $api_key = $request->input('api_key');
+            $apiKey = $request->input('api_key');
 
-            $auth_url = config('app.auth');
+            $authUrl = config('app.auth');
             
-            $client = new Client(['base_url' => $auth_url['base_url']]);
+            $client = new Client(['base_url' => $authUrl['base_url']]);
 
             $headers = ['X-API-KEY'         => env('AUTH_APP_KEY'),
                         'X-API-SECRET'  => env('AUTH_APP_SECRET')];
 
             try {
 
-                $token_res = $client->get($auth_url['token_uri'].'/'.$api_key, [
+                $tokenResponse = $client->get($authUrl['token_uri'].'/'.$apiKey, [
                                     'headers' => $headers
                                 ]);
 
             } catch (ClientException $e) {
 
-                $token_res = $e->getResponse();
+                $tokenResponse = $e->getResponse();
 
             }
 
-            switch ($token_res->getStatusCode()) {
+            switch ($tokenResponse->getStatusCode()) {
                 case 200:
-                    $res_data = $token_res->json();
+                    $responseData = $tokenResponse->json();
+
                     return response_ok([
                         '_meta' => [
                             'status' => 'ok',
@@ -164,7 +164,7 @@ class Controller extends BaseController
                             'api_version' => 1,
                         ],
                         'data' => [
-                            'token' => $res_data['token']
+                            'token' => $responseData['token']
                         ]
                     ]);
                     break;
@@ -174,7 +174,7 @@ class Controller extends BaseController
                     break;
 
                 default:
-                    return response()->json($token_res->json(), $token_res->getStatusCode());
+                    return response()->json($tokenResponse->json(), $tokenResponse->getStatusCode());
                     break;     
                 
             }
@@ -187,33 +187,44 @@ class Controller extends BaseController
     /**
      * Push Analytic Data to Queue Jobs
      *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string                   $endpoint Name of the Endpoint
+     * @param  string                   $resourceUri of endpoint resource
      * @return void
-     * @author 
      **/
-    private function pushAnalyticJobs(Request $request, $endpoint, $resource, $request_app)
+    private function pushAnalyticJobs(Request $request, $endpoint, $resource, $requestApp)
     {
 
         if (env('GA_ANALYTIC')) {
 
             //Push Queue Job for Google Analytics
-            $this->dispatch(new SendAnalytics($request->path(), $request_app));   
+            $this->dispatch(new SendAnalytics($request->path(), $requestApp));   
 
         }
 
         if (env('ANALYTIC_REPORT')) {
             
             //Push Queue Job for Internal Analytic Report
-            $resource_info = [
+            $resourceInfo = [
                 'endpoint' => $endpoint,
                 'resource' => $resource,
                 'query' => $request->query(),
                 'path' => $request->path()
             ];
 
-            $this->dispatch(new SaveReport($request->getClientIp(), $request_app, $resource_info));
-
+            $this->dispatch(new SaveReport($request->getClientIp(), $requestApp, $resourceInfo));
         }
+    }
 
+    /**
+     * Check request has a zawgyi font trigger.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return boolean
+     */
+    private function requestForZawgyi(Request $request)
+    {
+        return ($request->has('font') && $request->input('font') == 'zawgyi');
     }
 
 }
