@@ -96,9 +96,11 @@ class Controller extends BaseController
                     $responseJson = $response->json();
 
                     if ( $this->requestForZawgyi($request)) {
-                        $zawgyi = Rabbit::uni2zg(json_encode($responseJson));
 
-                        $responseJson = json_decode($zawgyi);
+                        $zawgyi = Rabbit::uni2zg(json_encode($responseJson, JSON_UNESCAPED_UNICODE));
+
+                        $responseJson = json_decode($zawgyi, true);
+
                     }
 
                     // Tweak for Retrofit Mapper
