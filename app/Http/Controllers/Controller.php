@@ -101,6 +101,20 @@ class Controller extends BaseController
 
                         $responseJson = json_decode($zawgyi, true);
 
+                        if(isset($responseJson['meta'])) {
+
+                            $responseJson['meta']['format'] = 'zawgyi';
+
+                        }
+
+                    } else {
+
+                        if(isset($responseJson['meta'])) {
+
+                            $responseJson['meta']['format'] = 'unicode';
+                            
+                        }
+
                     }
 
                     // Tweak for Retrofit Mapper
