@@ -32,9 +32,9 @@ class Ga
 		    ->setTrackingId($tracking_id)
 		    ->setClientId($app_info['token']) //ToDo : replace with uuid
 		    ->setQueueTime(1000)
-		    ->setDocumentPath($path)
+		    ->setDocumentPath($path);
 		    //->setApplicationName($app_info['name'])
-		    ->setApplicationId($app_info['app_id']);
+		    //->setApplicationId($app_info['app_id'])
 
 		$sent = $analytics->sendPageview();
 
