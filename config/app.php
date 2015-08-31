@@ -10,7 +10,7 @@ return [
 	'analytics' => [
 		'ga' => [
 			'version' => 1,
-			'tracking_id' => 'UA-64355859-1' //Change Google Analytic Tracking ID
+			'tracking_id' => env('GA_TRACKING_ID') //Change Google Analytic Tracking ID
 		]
 	],
 
