@@ -6,7 +6,7 @@ return [
 		'uri' => 'api/v1/authenticate', //Auth Uri
 		'token_uri' => 'api/v1/token/generate' //Token Generate Uri
 	],
-	'docs_url' => 'http://maepaysoh.org/docs', //Main Documentation Url
+	'docs_url' => 'http://myanmarapi.github.io', //Main Documentation Url
 	'analytics' => [
 		'ga' => [
 			'version' => 1,
