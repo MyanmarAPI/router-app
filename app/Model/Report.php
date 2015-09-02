@@ -308,28 +308,28 @@ class Report extends Model
 	 * @return void
 	 * @author 
 	 **/
-	public function getTotalHits()
+	public function getTotalHits($filter)
 	{
 		return [
 			'endpoint' => [
 				'title' => 'Endpoint',
-				'data' => $this->getHitbyInfo('endpoint')
+				'data' => $this->getHitbyInfo('endpoint', $filter)
 			],
 			'api_key' => [
 				'title' => 'API Key',
-				'data' => $this->getHitbyInfo('api_key')
+				'data' => $this->getHitbyInfo('api_key', $filter)
 			],
 			'ip_address' => [
 				'title' => 'IP Address',
-				'data' => $this->getHitbyInfo('ip_address')
+				'data' => $this->getHitbyInfo('ip_address', $filter)
 			],
 			'user_id' => [
 				'title' => 'User ID',
-				'data' => $this->getHitbyInfo('user_id')	
+				'data' => $this->getHitbyInfo('user_id', $filter)	
 			],
 			'user_token' => [
 				'title' => 'User Token',
-				'data' => $this->getHitbyInfo('user_token')
+				'data' => $this->getHitbyInfo('user_token', $filter)
 			],
 		];
 	}
@@ -340,15 +340,35 @@ class Report extends Model
 	 * @return void
 	 * @author 
 	 **/
-	public function getHitbyInfo($info = 'endpoint')
+	public function getHitbyInfo($info = 'endpoint', $filter = [])
 	{
-		$result = $this->collection()->aggregate(
-			[
-				'$group' => [
-					'_id' => '$'.$info,
-					'hit' => ['$sum' => '$daily']
+
+		if (!empty($filter)) {
+
+			$result = $this->collection()->aggregate(
+				[
+					'$match' => $filter
+				],
+				[
+					'$group' => [
+						'_id' => '$'.$info,
+						'hit' => ['$sum' => '$daily']
+					]
 				]
+			);
+			
+		} else {
+
+			$result = $this->collection()->aggregate(
+				[
+					'$group' => [
+						'_id' => '$'.$info,
+						'hit' => ['$sum' => '$daily']
+					]
 			]);
+
+		}
+		
 
 		return array_map(function($data){
 

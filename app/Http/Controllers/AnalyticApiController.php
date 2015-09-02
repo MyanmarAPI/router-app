@@ -120,8 +120,9 @@ class AnalyticApiController extends BaseController
 
 	public function getTotalHits(Request $request, $json = true)
 	{
+		$filters = $this->getFilterKeys($request);
 
-		$result = $this->model->getTotalHits();
+		$result = $this->model->getTotalHits($filters);
 
 		if (!$json) {
 			return $result;
