@@ -308,30 +308,38 @@ class Report extends Model
 	 * @return void
 	 * @author 
 	 **/
-	public function getTotalHits($filter)
+	public function getTotalHits($filter, $contents = [])
 	{
-		return [
-			'endpoint' => [
-				'title' => 'Endpoint',
-				'data' => $this->getHitbyInfo('endpoint', $filter)
-			],
-			'api_key' => [
-				'title' => 'API Key',
-				'data' => $this->getHitbyInfo('api_key', $filter)
-			],
-			'ip_address' => [
-				'title' => 'IP Address',
-				'data' => $this->getHitbyInfo('ip_address', $filter)
-			],
-			'user_id' => [
-				'title' => 'User ID',
-				'data' => $this->getHitbyInfo('user_id', $filter)	
-			],
-			'user_token' => [
-				'title' => 'User Token',
-				'data' => $this->getHitbyInfo('user_token', $filter)
-			],
+		$hit_contents = [
+			'endpoint' => 'Endpoint',
+			'api_key' => 'API Key',
+			'ip_address' => 'IP Adress',
+			'user_id' => 'User ID',
+			'user_token' => 'User Token'
 		];
+
+		if (!empty($contents)) {
+
+			$get_hits_contents = $contents;
+
+		} else {
+
+			$get_hits_contents = array_keys($hit_contents);
+
+		}
+
+		$data = [];
+
+		foreach ($get_hits_contents as $content) {
+			if (array_key_exists($content, $hit_contents)) {
+				$data[$content] = [
+					'title' => $hit_contents[$content],
+					'data' => $this->getHitbyInfo($content, $filter)
+				];
+			}	
+		}
+
+		return $data;
 	}
 
 	/**

@@ -117,7 +117,13 @@ class AnalyticApiController extends BaseController
 	{
 		$filters = $this->getFilterKeys($request);
 
-		$result = $this->model->getTotalHits($filters);
+		$hit_contents = [];
+
+		if ($request->has('hit_contents') && $request->input('hit_contents')) {
+			$hit_contents = explode("|", $request->input('hit_contents'));
+		}
+
+		$result = $this->model->getTotalHits($filters, $hit_contents);
 
 		if (!$json) {
 			return $result;
