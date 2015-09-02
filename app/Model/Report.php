@@ -303,7 +303,7 @@ class Report extends Model
 	}
 
 	/**
-	 * undocumented function
+	 * Get Total Hits
 	 *
 	 * @return void
 	 * @author 
@@ -326,7 +326,11 @@ class Report extends Model
 			'user_id' => [
 				'title' => 'User ID',
 				'data' => $this->getHitbyInfo('user_id')	
-			]
+			],
+			'user_token' => [
+				'title' => 'User Token',
+				'data' => $this->getHitbyInfo('user_token')
+			],
 		];
 	}
 
