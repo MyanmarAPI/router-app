@@ -30,11 +30,6 @@ class AnalyticApiController extends BaseController
 		return response()->json($results);
 	}
 
-	public function getWeekly(Request $request)
-	{
-
-	}
-
 	public function getDaily(Request $request, $json = true)
 	{
 
@@ -129,11 +124,6 @@ class AnalyticApiController extends BaseController
 		}
 
 		return response()->json($result);
-
-	}
-
-	public function perMinute(Request $request)
-	{
 
 	}
 
