@@ -256,7 +256,7 @@ class Controller extends BaseController
         // If request is not for zawgyi, 
         // or doesn't include 'q' query param (q is search keyword)
         // return without convert.
-        if ( ! $this->requestForZawgyi($request) || $request->has('q')) {
+        if ( ! $this->requestForZawgyi($request) || ! $request->has('q')) {
             return $query;
         }
         
