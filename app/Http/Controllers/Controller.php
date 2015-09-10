@@ -58,7 +58,7 @@ class Controller extends BaseController
                         'X-API-KEY' => $endpoints[$endpoint]['API_KEY'],
                         'X-API-SECRET' => $endpoints[$endpoint]['API_SECRET']
                     ],
-                    'query' => $request->query()
+                    'query' => $this->getQueryFromRequest($request)
                 ]);
                 
             } catch (ClientException $e) {
@@ -241,6 +241,29 @@ class Controller extends BaseController
     private function requestForZawgyi(Request $request)
     {
         return ($request->has('font') && $request->input('font') == 'zawgyi');
+    }
+    
+    /**
+     * Get query param lists from request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return array
+     */
+    private function getQueryFromRequest(Request $request)
+    {
+        $query = $request->query();
+
+        // If request is not for zawgyi, 
+        // or doesn't include 'q' query param (q is search keyword)
+        // return without convert.
+        if ( ! $this->requestForZawgyi($request) || $request->has('q')) {
+            return $query;
+        }
+        
+        // Convert zawgyi to unicode for search keyword.
+        $query['q'] = Rabbit::zg2uni($query['q']);
+
+        return $query;
     }
 
 }
