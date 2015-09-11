@@ -107,6 +107,14 @@ class Controller extends BaseController
 
                         }
 
+                        //Format meta replace for _meta
+                        if (isset($responseJson['_meta']['format'])) {
+
+                            $responseJson['_meta']['format'] = 'zawgyi';
+                            $responseJson['_meta']['unicode'] = false;
+
+                        }
+
                     } else {
 
                         if(isset($responseJson['meta'])) {
