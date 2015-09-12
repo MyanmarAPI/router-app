@@ -2,7 +2,7 @@
 
 /*|-------------------------------------------
   | Endpoints
-  | 
+  |
   | 'endpoint-uri' => [
   | 	'name' => 'Name of the endpoint',
   |		'desc' => 'Description of the endpoint',
@@ -44,7 +44,15 @@ return [
 		'desc' => 'Return Party List On Myanmar Election',
 		'base' => env('PARTY_BASE'),
 		'docs' => '',
-		'API_KEY' => '', 
+		'API_KEY' => '',
+		'API_SECRET' => ''
+	],
+	'parliament' => [
+		'name' => 'OMI Parliement',
+		'desc' => 'Return Parliament Performance data',
+		'base' => env('OMI_BASE'),
+		'docs' => '',
+		'API_KEY' => '',
 		'API_SECRET' => ''
 	],
 
