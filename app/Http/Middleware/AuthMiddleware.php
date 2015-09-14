@@ -49,7 +49,10 @@ class AuthMiddleware {
                 break;
             
             case 200:
-                $request->session()->put('request_user', $response->json());
+                app()->singleton('request_user', function() use ($response){
+                    return $response->json();
+                });
+                //$request->session()->put('request_user', $response->json());
                 return $next($request); 
             break;
 

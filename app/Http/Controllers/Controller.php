@@ -45,7 +45,9 @@ class Controller extends BaseController
 
     	$endpoints = config('endpoints');
 
-        $requestApp = $request->session()->get('request_user');
+        //$requestApp = $request->session()->get('request_user');
+        
+        $requestApp = app('request_user');
 
     	if (array_key_exists($endpoint, $endpoints)) {
 
