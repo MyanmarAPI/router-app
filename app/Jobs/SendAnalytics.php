@@ -41,8 +41,10 @@ class SendAnalytics extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(Ga $ga)
     {
-
-        $ga->sendPageview($this->request_path, $this->app_info);
-
+        if ($this->attempts() > 3) {
+            $this->delete();
+        } else {
+            $ga->sendPageview($this->request_path, $this->app_info);
+        }
     }
 }

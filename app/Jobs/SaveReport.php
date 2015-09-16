@@ -43,9 +43,11 @@ class SaveReport extends Job implements SelfHandling, ShouldQueue
 	 */
 	public function handle(ApiReport $report)
 	{
-
-		$report->makeReport($this->ip_address, $this->request_app, $this->resource_info);
-
+		if ($this->attempts() > 3) {
+			$this->delete();
+		} else {
+			$report->makeReport($this->ip_address, $this->request_app, $this->resource_info);
+		}
 	}
 
 }
