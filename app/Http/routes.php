@@ -20,6 +20,15 @@ $app->get('/', function() use ($app) {
     ], 404);
 });
 
+$app->group([
+    'prefix'    => '/health-check',
+], function () use ($app)
+{
+    $app->get('/', function() {
+        return response_ok(['message' => 'Ok.']);
+    });
+});
+
 //Analytic API
 
 $app->group([
