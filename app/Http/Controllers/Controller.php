@@ -95,7 +95,7 @@ class Controller extends BaseController
 
                     $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp);
 
-                    $responseJson = $response->json();
+                    $responseJson = json_decode($response->getBody($asString = TRUE));
 
                     if ( $this->requestForZawgyi($request)) {
 
@@ -103,9 +103,9 @@ class Controller extends BaseController
 
                         $responseJson = json_decode($zawgyi, true);
 
-                        if(isset($responseJson['meta'])) {
+                        if(isset($responseJson->meta)) {
 
-                            $responseJson['meta']['format'] = 'zawgyi';
+                            $responseJson->meta->format = 'zawgyi';
 
                         }
 
@@ -119,22 +119,22 @@ class Controller extends BaseController
 
                     } else {
 
-                        if(isset($responseJson['meta'])) {
+                        if(isset($responseJson->meta)) {
 
-                            $responseJson['meta']['format'] = 'unicode';
+                            $responseJson->meta->format = 'unicode';
                             
                         }
 
                     }
 
                     // Tweak for Retrofit Mapper
-                    if ( isset($responseJson['meta']['pagination']['links'])) {
+                    /*if ( isset($responseJson['meta']['pagination']['links'])) {
                         $links = $responseJson['meta']['pagination']['links'];
 
                         if ( empty($links)) {
                             $responseJson['meta']['pagination']['links'] = new \stdClass();
                         }
-                    }
+                    }*/
 
                     return response()->json($responseJson);
 
