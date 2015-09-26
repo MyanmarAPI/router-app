@@ -51,11 +51,11 @@ class Controller extends BaseController
         foreach ($endpoints as $key=>$endpoint) {
              
             $response=null;
-            $client = new Client(['base_uri' => $endpoint['base']]);
+            $client = new Client();
 
             try {
 
-                $response = $client->get($endpoint['status'], [
+                $response = $client->get($endpoint['base'].$endpoint['status'], [
                     'headers' => [
                         'X-API-KEY' => $endpoint['API_KEY'],
                         'X-API-SECRET' => $endpoint['API_SECRET']
