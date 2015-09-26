@@ -21,7 +21,8 @@ return [
 		'base' => env('CANDIDATES_BASE'),
 		'docs' => '',
 		'API_KEY' => env('CANDIDATES_KEY'),
-		'API_SECRET' => env('CANDIDATES_SECRET')
+		'API_SECRET' => env('CANDIDATES_SECRET'),
+		'status'=>'/list'
 	],
 	'faq' => [
 		'name' => 'FAQ API',
@@ -29,7 +30,8 @@ return [
 		'base' => env('FAQ_BASE'),
 		'docs' => '',
 		'API_KEY' => env('FAQ_KEY'),
-		'API_SECRET' => env('FAQ_SECRET')
+		'API_SECRET' => env('FAQ_SECRET'),
+		'status'=>'/list'
 	],
 	'geo' => [
 		'name' => 'Geolocation API',
@@ -37,7 +39,8 @@ return [
 		'base' => env('GEO_BASE'),
 		'docs' => '',
 		'API_KEY' => env('GEO_KEY'),
-		'API_SECRET' => env('GEO_SECRET')
+		'API_SECRET' => env('GEO_SECRET'),
+		'status'=>'/district?no_geo=true'
 	],
 	'party' => [
 		'name' => 'Party API',
@@ -45,7 +48,8 @@ return [
 		'base' => env('PARTY_BASE'),
 		'docs' => '',
 		'API_KEY' => '',
-		'API_SECRET' => ''
+		'API_SECRET' => '',
+		'status'=>'/'
 	],
 	'parliament' => [
 		'name' => 'OMI Parliement',
@@ -53,7 +57,8 @@ return [
 		'base' => env('OMI_BASE'),
 		'docs' => '',
 		'API_KEY' => '',
-		'API_SECRET' => ''
+		'API_SECRET' => '',
+		'status'=>'/members/all.json'
 	],
 
 ];

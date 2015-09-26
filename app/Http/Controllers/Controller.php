@@ -51,16 +51,15 @@ class Controller extends BaseController
         foreach ($endpoints as $key=>$endpoint) {
              
             $response=null;
-            $client = new Client(['base_url' => $endpoint['base']]);
+            $client = new Client(['base_uri' => $endpoint['base']]);
 
             try {
 
-                $response = $client->get($resource, [
+                $response = $client->get($endpoint['status'], [
                     'headers' => [
                         'X-API-KEY' => $endpoint['API_KEY'],
                         'X-API-SECRET' => $endpoint['API_SECRET']
-                    ],
-                    'query' => $this->getQueryFromRequest($request)
+                    ]
                 ]);
                 
             } catch (ClientException $e) {
