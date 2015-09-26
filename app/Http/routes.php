@@ -54,7 +54,11 @@ $app->group([
     ]);
 
 });
-
+//Endpoint Status
+$app->get('status', [
+    'as' => 'api.endpoint.status',
+    'uses' => 'App\Http\Controllers\Controller@status'
+]);
 //Endpoint List
 $app->get('endpoints', [
     'as' => 'api.endpoint.list',
