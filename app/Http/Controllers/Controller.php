@@ -101,7 +101,7 @@ class Controller extends BaseController
 
                         $zawgyi = Rabbit::uni2zg(json_encode($responseJson, JSON_UNESCAPED_UNICODE));
 
-                        $responseJson = json_decode($zawgyi, true);
+                        $responseJson = json_decode($zawgyi);
 
                         if(isset($responseJson->meta)) {
 
@@ -110,10 +110,10 @@ class Controller extends BaseController
                         }
 
                         //Format meta replace for _meta
-                        if (isset($responseJson['_meta']['format'])) {
+                        if (isset($responseJson->_meta->format)) {
 
-                            $responseJson['_meta']['format'] = 'zawgyi';
-                            $responseJson['_meta']['unicode'] = false;
+                            $responseJson->_meta->format = 'zawgyi';
+                            $responseJson->_meta->unicode = false;
 
                         }
 
