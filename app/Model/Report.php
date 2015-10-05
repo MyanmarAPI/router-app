@@ -332,9 +332,11 @@ class Report extends Model
 
 		foreach ($get_hits_contents as $content) {
 			if (array_key_exists($content, $hit_contents)) {
+				$result = $this->getHitbyInfo($content, $filter);
 				$data[$content] = [
 					'title' => $hit_contents[$content],
-					'data' => $this->getHitbyInfo($content, $filter)
+					'data' => $result,
+					'count' => count($result)
 				];
 			}	
 		}
