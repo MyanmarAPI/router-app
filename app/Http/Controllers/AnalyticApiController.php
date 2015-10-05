@@ -59,7 +59,7 @@ class AnalyticApiController extends BaseController
 					'$gte' => new MongoDate(strtotime($from." 00:00:00")),
 					'$lte' => new MongoDate(strtotime($to." 00:00:00"))
 				]
-			]);
+			], ['endpoint', 'api_key']);
 		}
 
 		if (!$json) {
@@ -127,7 +127,7 @@ class AnalyticApiController extends BaseController
 				'$gte' => new MongoDate(strtotime($from."-01 00:00:00")),
 				'$lte' => new MongoDate(strtotime($to." 00:00:00"))
 				]
-			]);	
+			], ['endpoint', 'api_key']);	
 		}
 
 		if (!$json) {
