@@ -34,6 +34,82 @@ class Controller extends BaseController
     }
 
     /**
+     * Check endpoints status
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  string                   $endpoint Name of the Endpoint
+     * @param  string                   $resource Uri of endpoint resource
+     * @return \Illuminate\Http\Response
+     **/
+    public function status(Request $request) {
+
+        $endpoints = config('endpoints');
+        $statuses=[];
+        $allgood=true;
+        
+
+        foreach ($endpoints as $key=>$endpoint) {
+             
+            $response=null;
+            $client = new Client();
+
+            try {
+
+                $response = $client->get($endpoint['base'].$endpoint['status'], [
+                    'headers' => [
+                        'X-API-KEY' => $endpoint['API_KEY'],
+                        'X-API-SECRET' => $endpoint['API_SECRET']
+                    ]
+                ]);
+                
+            } catch (ClientException $e) {
+                $allgood=false;
+                $response = $e->getResponse();
+                
+            } catch (ConnectException $e) {
+                $allgood=false;
+                $statuses[$key]=config('status.messages.500');
+
+            } catch (\Exception $e) {
+                $allgood=false;
+                $statuses[$key]=config('status.messages.500');
+
+            }
+            if($response!==null){
+                switch ($response->getStatusCode()) {
+
+                    case 500:
+                        $allgood=false;
+                        $statuses[$key]=config('status.messages.500');
+                        break;
+                    
+                    case 401:
+                        $allgood=false;
+                        $statuses[$key]=config('status.messages.401');
+                        break;
+
+                    case 404:
+                        $allgood=false;
+                        $statuses[$key]=config('status.messages.404');
+                        break;
+
+                    case 200:
+                        $statuses[$key]='OK';
+                        break;
+                }
+            }
+            
+            
+        } 
+
+        return response()->json([
+                    'all_endpoint_good'=>$allgood,
+                    'endpoints'=>$statuses
+                ]);
+
+    }
+
+    /**
      * Get Endpoint Data
      *
      * @param  \Illuminate\Http\Request $request
@@ -95,46 +171,46 @@ class Controller extends BaseController
 
                     $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp);
 
-                    $responseJson = $response->json();
+                    $responseJson = json_decode($response->getBody($asString = TRUE));
 
                     if ( $this->requestForZawgyi($request)) {
 
                         $zawgyi = Rabbit::uni2zg(json_encode($responseJson, JSON_UNESCAPED_UNICODE));
 
-                        $responseJson = json_decode($zawgyi, true);
+                        $responseJson = json_decode($zawgyi);
 
-                        if(isset($responseJson['meta'])) {
+                        if(isset($responseJson->meta)) {
 
-                            $responseJson['meta']['format'] = 'zawgyi';
+                            $responseJson->meta->format = 'zawgyi';
 
                         }
 
                         //Format meta replace for _meta
-                        if (isset($responseJson['_meta']['format'])) {
+                        if (isset($responseJson->_meta->format)) {
 
-                            $responseJson['_meta']['format'] = 'zawgyi';
-                            $responseJson['_meta']['unicode'] = false;
+                            $responseJson->_meta->format = 'zawgyi';
+                            $responseJson->_meta->unicode = false;
 
                         }
 
                     } else {
 
-                        if(isset($responseJson['meta'])) {
+                        if(isset($responseJson->meta)) {
 
-                            $responseJson['meta']['format'] = 'unicode';
+                            $responseJson->meta->format = 'unicode';
                             
                         }
 
                     }
 
                     // Tweak for Retrofit Mapper
-                    if ( isset($responseJson['meta']['pagination']['links'])) {
+                    /*if ( isset($responseJson['meta']['pagination']['links'])) {
                         $links = $responseJson['meta']['pagination']['links'];
 
                         if ( empty($links)) {
                             $responseJson['meta']['pagination']['links'] = new \stdClass();
                         }
-                    }
+                    }*/
 
                     return response()->json($responseJson);
 

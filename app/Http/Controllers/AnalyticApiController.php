@@ -6,6 +6,7 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Model\Report;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use MongoDate;
 
 class AnalyticApiController extends BaseController
 {
@@ -52,6 +53,15 @@ class AnalyticApiController extends BaseController
 
 		$result["data"] = $this->model->getDaily($from, $to, $filters);
 
+		if ($request->input('thd')) {
+			$result["total_hits"] = $this->model->getTotalHits([
+				'date' => [
+					'$gte' => new MongoDate(strtotime($from." 00:00:00")),
+					'$lte' => new MongoDate(strtotime($to." 00:00:00"))
+				]
+			], ['endpoint', 'api_key']);
+		}
+
 		if (!$json) {
 			return $result;
 		}
@@ -74,6 +84,12 @@ class AnalyticApiController extends BaseController
 		];
 
 		$result["data"] = $this->model->getHourly($date, $filters);
+
+		if ($request->input('thd')) {
+			$result["total_hits"] = $this->model->getTotalHits([
+				'date' => new MongoDate(strtotime($date." 00:00:00"))
+			]);
+		}
 
 		if (!$json) {
 			return $result;
@@ -104,6 +120,15 @@ class AnalyticApiController extends BaseController
 		];
 
 		$result["data"] = $this->model->getMonthly($from, $to, $filters);
+
+		if ($request->input('thd')) {
+			$result["total_hits"] = $this->model->getTotalHits([
+			'date' => [
+				'$gte' => new MongoDate(strtotime($from."-01 00:00:00")),
+				'$lte' => new MongoDate(strtotime($to." 00:00:00"))
+				]
+			], ['endpoint', 'api_key']);	
+		}
 
 		if (!$json) {
 			return $result;
