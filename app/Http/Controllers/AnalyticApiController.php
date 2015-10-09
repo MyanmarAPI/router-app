@@ -88,7 +88,7 @@ class AnalyticApiController extends BaseController
 		if ($request->input('thd')) {
 			$result["total_hits"] = $this->model->getTotalHits([
 				'date' => new MongoDate(strtotime($date." 00:00:00"))
-			]);
+			], ['endpoint', 'api_key']);
 		}
 
 		if (!$json) {
