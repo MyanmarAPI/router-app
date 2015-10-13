@@ -66,7 +66,7 @@ class Report extends Model
 		return $this->getCollection()->update([
 				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
-				'ip_address' => $ip_address,
+				//'ip_address' => $ip_address,
 				'user_token' => $app_info['token'],
 				'date' => new MongoDate(strtotime($time['now']." 00:00:00"))
 			], ['$inc' => [
@@ -113,7 +113,7 @@ class Report extends Model
 		$report = $this->getCollection()->first([
 				'api_key' => $app_info['app_key'],
 				'path' => $resource_info['path'],
-				'ip_address' => $ip_address,
+				//'ip_address' => $ip_address,
 				'user_token' => $app_info['token'],
 				'date' => new MongoDate(strtotime($now->toDateString()." 00:00:00"))
 			]);
