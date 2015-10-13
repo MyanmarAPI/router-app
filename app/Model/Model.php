@@ -26,7 +26,7 @@ abstract class Model
 	public function __construct() 
 	{
 
-		$this->connect();
+		//$this->connect();
 
 		$this->connection = Connection::instance();
 
