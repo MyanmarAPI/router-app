@@ -50,8 +50,10 @@ $app->singleton(
  */
 $app->configure('endpoints');
 $app->configure('app');
+$app->configure('queue');
 $app->configure('status');
 $app->configure('database');
+$app->configure('mongo_lite');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -93,7 +95,19 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register('App\Providers\AppServiceProvider');
+$app->register('Hexcores\MongoLite\Laravel\MongoLiteServiceProvider');
+$app->register('App\Providers\AppServiceProvider');
+$app->register('App\Providers\QueueServiceProvider');
+
+// Remove default queue binding.
+// Because lumen's queue failed used the database (mysql, pgsql),
+// So we need to change this process to mongodb using mongo lite package.
+// ** Added By Nyan Lynn Htut at Oct-13-2015 **
+unset($app->availableBindings['queue']);
+unset($app->availableBindings['queue.connection']);
+unset($app->availableBindings['Illuminate\Contracts\Queue\Factory']);
+unset($app->availableBindings['Illuminate\Contracts\Queue\Queue']);
+
 
 /*
 |--------------------------------------------------------------------------
