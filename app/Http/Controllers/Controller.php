@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use Carbon\Carbon;
 
 class Controller extends BaseController
 {
@@ -169,7 +170,7 @@ class Controller extends BaseController
 
                 case 200:
 
-                    $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp);
+                    $this->pushAnalyticJobs($request, $endpoint, $resource, $requestApp, Carbon::now());
 
                     $responseJson = json_decode($response->getBody($asString = TRUE));
 
@@ -294,7 +295,7 @@ class Controller extends BaseController
      * @param  array                    $requestApp Requested application.
      * @return void
      **/
-    private function pushAnalyticJobs(Request $request, $endpoint, $resource, $requestApp)
+    private function pushAnalyticJobs(Request $request, $endpoint, $resource, $requestApp, $request_time = null)
     {
 
         if (env('GA_ANALYTIC')) {
@@ -314,7 +315,7 @@ class Controller extends BaseController
                 'path' => $request->path()
             ];
 
-            $this->dispatch(new SaveReport($request->getClientIp(), $requestApp, $resourceInfo));
+            $this->dispatch(new SaveReport($request->getClientIp(), $requestApp, $resourceInfo, $request_time));
         }
     }
 

@@ -21,7 +21,7 @@ class Report extends Model
 	 * @return App\Model
 	 * @author 
 	 **/
-	public function newReport($ip_address, $app_info, $resource_info)
+	public function newReport($ip_address, $app_info, $resource_info, $request_time = null)
 	{
 		if (isset($resource_info['query']['api_key'])) {
 			unset($resource_info['query']['api_key']);
@@ -31,7 +31,7 @@ class Report extends Model
 			unset($resource_info['query']['token']);
 		}
 
-		$time = $this->prepareTime();
+		$time = $this->prepareTime($request_time);
 
 		return $this->getCollection()->insert([
 			'user_id' => $app_info['user_id'],
@@ -59,9 +59,9 @@ class Report extends Model
 	 * @return App\Model
 	 * @author 
 	 **/
-	public function updateReport($ip_address, $app_info, $resource_info)
+	public function updateReport($ip_address, $app_info, $resource_info, $request_time = null)
 	{
-		$time = $this->prepareTime();
+		$time = $this->prepareTime($request_time);
 
 		return $this->getCollection()->update([
 				'api_key' => $app_info['app_key'],
@@ -84,9 +84,11 @@ class Report extends Model
 	 * @return void
 	 * @author 
 	 **/
-	private function prepareTime()
+	private function prepareTime($now)
 	{
-		$now = Carbon::now();
+		if (!$now) {
+			$now = Carbon::now();
+		}
 
 		$hour = $now->hour;
 
