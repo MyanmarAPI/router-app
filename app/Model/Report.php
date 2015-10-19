@@ -92,6 +92,14 @@ class Report extends Model
 
 		$minute = ($hour*60)+$now->minute;
 
+		if ($hour == 0) {
+			$hour = "00";
+		}
+
+		if ($minute == 0) {
+			$minute = "00";
+		}
+
 		return [
 			'nowObj' => $now,
 			'now' => $now->toDateString(),
@@ -141,7 +149,11 @@ class Report extends Model
 
 		for ($i=0; $i < 24; $i++) { 
 
-			$pipeline[$date.' '.$i.':00'] = ['$sum' => '$hour.'.$i];
+			if ($i == 0) {
+				$pipeline[$date.' '.$i.':00'] = ['$sum' => '$hour.00'];
+			} else {
+				$pipeline[$date.' '.$i.':00'] = ['$sum' => '$hour.'.$i];	
+			}
 
 		}
 
