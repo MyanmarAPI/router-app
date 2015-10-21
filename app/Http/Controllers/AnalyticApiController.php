@@ -138,6 +138,40 @@ class AnalyticApiController extends BaseController
 
 	}
 
+	public function getPerMinute(Request $request, $json = true)
+	{
+		//Currently only for Current time
+		//Get Date & Time
+		$date = $request->input('date');
+		$time = $request->input('time');
+
+		if (!$date) {
+
+			$now = Carbon::now();
+
+			$date = $now->toDateString();
+
+			$time = $now->hour;
+		}
+		
+		$result["date_range"] = [
+			"date" => $date,
+			"time" => $time.':00'
+		];
+
+		$filters = $this->getFilterKeys($request);
+
+		$result["data"] = $this->model->getPerMinute($date, $time, $filters);
+
+		if (!$json) {
+			return $result;
+		}
+
+		return response()->json($result);
+
+
+	}
+
 	public function getTotalHits(Request $request, $json = true)
 	{
 		$filters = $this->getFilterKeys($request);

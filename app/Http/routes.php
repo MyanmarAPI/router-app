@@ -42,6 +42,11 @@ $app->group([
         'uses' => 'AnalyticApiController@getAllDefaults'
     ]);
 
+    $app->get('per-minutes', [
+        'as' => 'api.analytics.perminute',
+        'uses' => 'AnalyticApiController@getPerMinute'
+    ]);
+
     $app->get('hourly', [
         'as' => 'api.analytics.hourly',
         'uses' => 'AnalyticApiController@getHourly'

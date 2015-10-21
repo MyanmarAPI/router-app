@@ -138,6 +138,61 @@ class Report extends Model
 	}
 
 	/**
+	 * Get Hits per minute
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	public function getPerMinute($date, $hour, $filter = [])
+	{
+
+		$pipeline = [];
+		$pipeline['_id'] = '$date';
+
+		for ($i=0; $i < 60; $i++) { 
+			$min = $hour*60 + $i;
+			$pipeline[$date.' '.$hour.':'.sprintf("%02d", $i)] = ['$sum' => '$minute.'.$min];
+		}
+
+		$match_query = [
+			'date' => new MongoDate(strtotime($date." 00:00:00"))
+		];
+
+		$result = $this->collection()->aggregate(
+			[
+				'$match' => $this->getFinalMatchQuery($match_query, $filter)
+			],
+			[
+				'$group' => $pipeline
+			]);
+
+		$graph_data = [];
+
+		if (!empty($result['result'])) {
+
+			unset($result['result'][0]['_id']);
+
+			foreach ($result['result'][0] as $key => $value) {
+				$graph_data[] = [
+					'period' => $key,
+					'value' => $value
+				]; 
+			}
+		} else {
+
+			for ($i=0; $i < 60 ; $i++) { 
+				$graph_data[] = [
+					'period' => $date.' '.$hour.':'.sprintf("%02d", $i),
+					'value' => 0
+				]; 
+			}
+
+		}
+
+		return $graph_data;
+	}
+
+	/**
 	 * Get Hourly Hits
 	 *
 	 * @return void
