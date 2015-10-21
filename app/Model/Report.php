@@ -329,7 +329,8 @@ class Report extends Model
 			'api_key' => 'API Key',
 			'ip_address' => 'IP Adress',
 			'user_id' => 'User ID',
-			'user_token' => 'User Token'
+			'user_token' => 'User Token',
+			'path' => 'Path'
 		];
 
 		if (!empty($contents)) {
