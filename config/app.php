@@ -13,7 +13,7 @@ return [
 			'tracking_id' => env('GA_TRACKING_ID') //Change Google Analytic Tracking ID
 		]
 	],
-
+	'log' => 'daily', //make log daily and rotate
 	/*
 	|--------------------------------------------------------------------------
 	| Encryption Key
