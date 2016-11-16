@@ -98,6 +98,7 @@ $app->routeMiddleware([
 $app->register('Hexcores\MongoLite\Laravel\MongoLiteServiceProvider');
 $app->register('App\Providers\AppServiceProvider');
 $app->register('App\Providers\QueueServiceProvider');
+$app->register('App\Providers\LogServiceProvider');
 
 // Remove default queue binding.
 // Because lumen's queue failed used the database (mysql, pgsql),
