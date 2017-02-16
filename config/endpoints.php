@@ -42,6 +42,15 @@ return [
 		'API_SECRET' => env('GEO_SECRET'),
 		'status'=>'district?no_geo=true'
 	],
+	'polling-station' => [
+		'name' => 'Polling Station API',
+		'desc' => '',
+		'base' => env('PS_BASE'),
+		'docs' => '',
+		'API_KEY' => env('PS_KEY'),
+		'API_SECRET' => env('PS_SECRET'),
+		'status' => 'list'
+ 	],
 	'party' => [
 		'name' => 'Party API',
 		'desc' => 'Return Party List On Myanmar Election',
