@@ -51,6 +51,15 @@ return [
 		'API_SECRET' => env('PS_SECRET'),
 		'status' => 'list'
  	],
+ 	'constituency' => [
+		'name' => 'Constituency API',
+		'desc' => '',
+		'base' => env('REGION_BASE'),
+		'docs' => '',
+		'API_KEY' => env('REGION_KEY'),
+		'API_SECRET' => env('REGION_SECRET'),
+		'status' => 'state_region'
+ 	],
 	'party' => [
 		'name' => 'Party API',
 		'desc' => 'Return Party List On Myanmar Election',
