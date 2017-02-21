@@ -69,6 +69,15 @@ return [
 		'API_SECRET' => '',
 		'status'=>''
 	],
+	'contesting-party' => [
+		'name' => 'Party API by Election Year',
+		'desc' => 'Return Party List On Myanmar Election by Year',
+		'base' => env('CON_PARTY_BASE'),
+		'docs' => '',
+		'API_KEY' => env('CANDIDATES_KEY'),
+		'API_SECRET' => env('CANDIDATES_SECRET'),
+		'status'=>''
+	],
 	'parliament' => [
 		'name' => 'OMI Parliement',
 		'desc' => 'Return Parliament Performance data',
