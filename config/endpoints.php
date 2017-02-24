@@ -33,6 +33,15 @@ return [
 		'API_SECRET' => env('FAQ_SECRET'),
 		'status'=>'list'
 	],
+	'voteredu' => [
+		'name' => 'Voter Education API',
+		'desc' => '',
+		'base' => env('VoterEdu_BASE'),
+		'docs' => '',
+		'API_KEY' => env('FAQ_KEY'),
+		'API_SECRET' => env('FAQ_SECRET'),
+		'status'=>'ballots/valid'
+	],
 	'geo' => [
 		'name' => 'Geolocation API',
 		'desc' => '',
