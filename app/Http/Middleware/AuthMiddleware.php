@@ -16,7 +16,7 @@ class AuthMiddleware {
     public function handle($request, Closure $next)
     {
         if ( ! $request->has('token')) {
-            return response()->json(config('status.messages.404'), 404);
+            return response()->json(config('status.messages.401'), 401);
         }
 
         $token = $request->input('token');
